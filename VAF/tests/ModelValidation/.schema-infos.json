@@ -1,0 +1,10 @@
+{
+  "schemaInfos": [
+    {
+      "name": "Vehicle Application Framework (VAF)",
+      "description": "VAF Configuration Schema",
+      "currentVersion": "0.6.0",
+      "schemaFile": "./vaf_schema.json"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{% extends "common/h_file_base.jinja" %}
+
+{% block includes %}
+{% for i in includes | sort %}
+{{ i }}
+{% endfor %}
+{% endblock %}
+
+{% block content %}
+class {{operation_name}} final {
+  public:
+   struct Output {
+    {% for p in parameters %}
+    {{ data_type_to_str(p.TypeRef) }} {{ p.Name }};
+  {% endfor %}
+   };
+ };
+{% endblock %}

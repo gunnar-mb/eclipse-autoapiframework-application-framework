@@ -1,0 +1,86 @@
+# IDE's
+## Jetbrains IDE's
+.DS_Store
+.idea
+
+## Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Ansible
+## Retry Files
+*.retry
+
+# Python
+## Local History for Visual Studio Code
+.history/
+
+## Byte-compiled / optimized / DLL files
+**/__pycache__/
+*.py[cod]
+
+## C extensions
+*.so
+
+## Distribution / packaging
+build/
+dist/
+*.egg-info/
+pip-wheel-metadata/
+
+## Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+## Unit test / coverage reports
+.pytest_cache/
+.tox/
+.coverage*
+.cache
+nosetests.xml
+coverage.xml
+htmlcov/
+report.xml
+tests/_temp/
+tests/*/results/*.xml
+
+## Translations
+*.mo
+
+## Mr Developer
+.mr.developer.cfg
+.project
+.pydevproject
+
+## Rope
+.ropeproject
+
+## Django stuff:
+*.log
+*.pot
+
+## Sphinx Spec documentation
+spec/_build/
+spec/_temp/
+
+# Sphinx API documentation
+doc/api/
+
+## General documentation
+**/_build/
+**/_release/
+
+## PDM
+.venv/
+venv/
+env/
+__pypackages__
+.pdm-python
+.pdm.toml
+
+## MYPY
+.mypy_cache

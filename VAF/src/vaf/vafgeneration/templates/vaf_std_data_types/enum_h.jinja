@@ -1,0 +1,11 @@
+{% extends "common/h_file_base.jinja" %}
+
+{% block content %}
+enum {{ vaf_enum.Name }} {
+
+{% for l in vaf_enum.Literals %}
+{{ l.Label }} = {{ l.Value}},
+{% endfor %}
+
+};
+{% endblock %}

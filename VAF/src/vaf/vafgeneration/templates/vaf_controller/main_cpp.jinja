@@ -1,0 +1,11 @@
+{% include "common/copyright.jinja" %}
+
+{{ controller_file.get_include() }}
+
+int main() {
+  {{ controller_file.get_full_type_name() }} executable_controller;
+  executable_controller.Run(false);
+
+  return 0;
+}
+{# dumm coment for new line #}

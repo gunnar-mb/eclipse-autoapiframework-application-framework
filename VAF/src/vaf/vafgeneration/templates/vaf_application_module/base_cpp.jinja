@@ -1,0 +1,22 @@
+
+{% extends "common/cpp_file_base.jinja" %}
+
+{% block content %}
+{{ app_module.Name }}Base::{{ app_module.Name }}Base(ConstructorToken&& token)
+    : vaf::ControlInterface(token.name_, std::move(token.dependencies_), token.executable_controller_interface_, token.executor_),
+      executor_{vaf::ControlInterface::executor_}{% if (interfaces | length) > 0 %},{% endif %}
+
+      {% for i in interfaces %}
+      {{ i["instance"] }}_{std::move(token.{{ i["instance"] }}_)}{% if not loop.last %},{% endif %}
+
+      {% endfor %}
+  {
+  {% for r in app_module.Tasks %}
+  executor_.RunPeriodic("{{ r.Name }}", std::chrono::milliseconds{ {{ time_str_to_milliseconds(r.Period ) }} }, [this]() { {{ r.Name }}(); }, {
+      {%- for run_after_item in r.RunAfter -%}
+        "{{ run_after_item }}"{% if not loop.last %},{% endif %}
+      {%- endfor -%}
+    }, token.task_offset_{{ r.Name }}_, token.task_budget_{{ r.Name }}_);
+  {% endfor %}
+}
+{% endblock %}

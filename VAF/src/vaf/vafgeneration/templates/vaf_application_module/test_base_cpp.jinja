@@ -1,0 +1,10 @@
+
+{% extends "common/cpp_file_base.jinja" %}
+
+{% block content %}
+{{ app_module.Name }}Base::{{ app_module.Name }}Base(ConstructorToken&& token){% if (interfaces | length) > 0 %}:{% endif %}
+
+{% for i in interfaces %}
+      {{ i["instance"] }}_{std::move(token.{{ i["instance"] }}_)}{% if not loop.last %},
+{% endif %}{% endfor %} {}
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "common/h_file_base.jinja" %}
+{% import "vaf_interface/macros.jinja" as interface with context %}
+
+{% block includes %}
+#include <string>
+#include <functional>
+
+#include "vaf/future.h"
+#include "vaf/result.h"
+#include "vaf/data_ptr.h"
+
+{% for i in include_files | sort %}
+{{ i }}
+{% endfor %}
+{% endblock %}
+
+{% block content %}
+class {{ name }}Consumer {
+public:
+  virtual ~{{ name }}Consumer() = default;
+
+{% for de in data_elements %}
+{%- set data_type = data_type_to_str(de.TypeRef) %}
+  virtual {{ interface.consumer_data_element_get_allocated(de) }} = 0;
+  virtual {{ interface.consumer_data_element_get(de) }} = 0;
+  virtual {{ interface.consumer_data_element_handler(de) }} = 0;
+{% endfor %}
+
+{% for op in operations %}
+  virtual {{ interface.consumer_operation(op, module_interface) }} = 0;
+{% endfor %}
+};
+{% endblock %}

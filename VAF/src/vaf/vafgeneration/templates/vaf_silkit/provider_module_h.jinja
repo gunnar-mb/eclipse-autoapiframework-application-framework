@@ -1,0 +1,57 @@
+{% extends "common/h_file_base.jinja" %}
+{% import "vaf_interface/macros.jinja" as interface with context %}
+
+{% block includes %}
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "vaf/controller_interface.h"
+#include "vaf/data_ptr.h"
+#include "vaf/executable_controller_interface.h"
+#include "vaf/result.h"
+
+#include "silkit/SilKit.hpp"
+#include "silkit/services/all.hpp"
+#include "silkit/services/orchestration/string_utils.hpp"
+#include "silkit/util/serdes/Serialization.hpp"
+#include "protobuf_interface_{{ module.ModuleInterfaceRef.Namespace.replace("::", "_") }}_{{ module.ModuleInterfaceRef.Name }}.pb.h"
+
+{{ interface_file.get_include() }}
+{% endblock %}
+
+{% block content %}
+class {{ module.Name }} final : public {{ interface_file.get_full_type_name() }}, public vaf::ControlInterface {
+ public:
+  explicit {{ module.Name }}(vaf::Executor& executor, std::string name, vaf::ExecutableControllerInterface& executable_controller_interface);
+  ~{{ module.Name }}() override = default;
+
+  vaf::Result<void> Init() noexcept override;
+  void Start() noexcept override;
+  void Stop() noexcept override;
+  void DeInit() noexcept override;
+
+  {% for de in module.ModuleInterfaceRef.DataElements %}
+  {{ interface.provider_data_element_allocate(de) }} override;
+  {{ interface.provider_data_element_set_allocated(de) }} override;
+  {{ interface.provider_data_element_set(de) }} override;
+  {% endfor %}
+
+  {% for op in module.ModuleInterfaceRef.Operations %}
+  {{ interface.provider_operation(op, module.ModuleInterfaceRef) }} override;
+  {% endfor %}
+
+ private:
+  std::unique_ptr<SilKit::IParticipant> participant_;
+  {% for de in module.ModuleInterfaceRef.DataElements %}
+  {% set de_name = add_namespace_to_name(de.Name, module.ModuleInterfaceRef.Namespace) %}
+  SilKit::Services::PubSub::IDataPublisher* publisher_{{ de_name }}_;
+  {% endfor %}
+
+  {% for op in module.ModuleInterfaceRef.Operations %}
+  {% set op_name = add_namespace_to_name(op.Name, module.ModuleInterfaceRef.Namespace) %}
+  {{ interface.provider_operation_callback(op, module.ModuleInterfaceRef) }} CbkFunction_{{ op_name }}_{};
+  SilKit::Services::Rpc::IRpcServer* server_{{ op_name }}_;
+  {% endfor %}
+};
+{% endblock %}

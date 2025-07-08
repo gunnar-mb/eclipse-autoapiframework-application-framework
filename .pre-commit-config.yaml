@@ -1,0 +1,27 @@
+repos:
+ - repo: local
+   hooks:
+      - id: vaf-commit-hook-format
+        name: VAF - make format
+        entry: ./.pre-commit-hooks/perform-format.sh
+        language: script
+        pass_filenames: false
+        verbose: true
+      - id: vaf-commit-hook-lint
+        name: VAF - make lint
+        entry: ./.pre-commit-hooks/perform-lint.sh
+        language: script
+        pass_filenames: false
+        verbose: true
+      - id: vaf-commit-hook-test
+        name: VAF - make test
+        entry: ./.pre-commit-hooks/perform-test.sh
+        language: script
+        pass_filenames: false
+        verbose: true
+      - id: vaf-commit-hook-build
+        name: VAF - make build
+        entry: ./.pre-commit-hooks/perform-build.sh
+        language: script
+        pass_filenames: false
+        verbose: true

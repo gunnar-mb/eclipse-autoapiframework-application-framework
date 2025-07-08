@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+
+package protobuf.test2;
+
+message MyArray {
+  repeated uint64 vaf_value_internal = 1;
+}
+message MyVector {
+  repeated uint32 vaf_value_internal = 1;
+}
+message MyStruct {
+  protobuf.test2.MyStruct MySub1 = 1;
+  protobuf.test2.MyVector MySub2 = 2;
+}

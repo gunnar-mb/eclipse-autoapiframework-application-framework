@@ -1,0 +1,93 @@
+{% extends "common/cpp_file_base.jinja" %}
+
+{% block includes %}
+{%- for i in get_includes_of_platform_modules(communication_modules) %}
+{{ i }}
+{% endfor %}
+{% for am in executable.ApplicationModules %}
+{{ get_include_of_application_module(am) }}
+{% endfor %}
+
+
+#include "vaf/result.h"
+
+{% endblock %}
+
+{% block content %}
+ExecutableController::ExecutableController()
+  : ExecutableControllerBase(),
+    executor_{} {
+}
+
+void ExecutableController::DoInitialize() {
+  executor_ = std::make_unique<vaf::Executor>(std::chrono::milliseconds{ {{time_str_to_milliseconds(executable.ExecutorPeriod) }} });
+
+{% for m in communication_modules %}
+{% if not is_internal_communication_module(executable, m)%}
+
+  auto {{ m.Name }} = std::make_shared<{{ get_full_type_of_platform_module(m) }}>(
+    *executor_,
+    "{{ m.Name }}",
+    *this);
+{% endif %}
+{% endfor %}
+{%for m in communication_modules %}
+{% if is_internal_communication_module(executable, m)%}
+
+  auto {{ m.Name }} = std::make_shared<{{ get_full_type_of_platform_module(m) }}>(
+    *executor_,
+    "{{ m.Name }}",
+    std::vector<std::string>{},
+    *this);
+{% endif%}
+{% endfor %}
+{% for am in executable.ApplicationModules %}
+
+{% set am_name = am.ApplicationModuleRef.Name %}
+{% set am_type = get_full_type_of_application_module(am) %}
+{% set execution_dependency, module_dependency = get_dependencies_of_application_module(executable, am) %}
+  auto {{ am_name }} = std::make_shared<{{ am_type }}>( {{ am_type }}::ConstructorToken{
+    "{{ am_name }}",
+    std::vector<std::string>{
+        {% for d in execution_dependency %}
+      {"{{ d }}"}{% if not loop.last %},{% endif %}
+
+        {% endfor %}
+    },
+    *this,
+    *executor_{% if (module_dependency | length) > 0 %},{% endif %}
+
+    {% for d in module_dependency %}
+    {{d}}{% if not loop.last %},{% endif %}
+
+    {% endfor %}
+    {%- if (am.TaskMapping | length) > 0 %},{% endif %}
+    {% for r in am.TaskMapping %}
+    {% set offset, budget = get_task_mapping(r, am) %}
+    {{offset}},
+    std::chrono::nanoseconds{ {{budget}} }{% if not loop.last %},{% endif %}
+
+    {% endfor %}
+    });
+{% endfor %}
+{% for m in communication_modules %}
+
+  RegisterModule({{ m.Name }});
+{% endfor %}
+{% for am in executable.ApplicationModules %}
+
+  RegisterModule({{ am.ApplicationModuleRef.Name }});
+{% endfor %}
+
+  ExecutableControllerBase::DoInitialize();
+}
+
+void ExecutableController::DoStart() {
+  ExecutableControllerBase::DoStart();
+}
+
+void ExecutableController::DoShutdown() {
+  ExecutableControllerBase::DoShutdown();
+}
+
+{% endblock %}

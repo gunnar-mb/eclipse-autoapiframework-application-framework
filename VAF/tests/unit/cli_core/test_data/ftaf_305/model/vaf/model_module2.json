@@ -1,0 +1,16 @@
+{
+"ApplicationModules": [
+    {
+      "Name": "AppModule2",
+      "Namespace": "demo",
+      "ConsumedInterfaces": [],
+      "ProvidedInterfaces": [],
+      "Tasks": [
+        {
+          "Name": "PeriodicTask",
+          "Period": "200ms"
+        }
+      ]
+    }
+  ]
+}

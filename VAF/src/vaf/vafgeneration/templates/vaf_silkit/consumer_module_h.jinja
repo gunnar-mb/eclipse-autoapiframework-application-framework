@@ -1,0 +1,81 @@
+{% extends "common/h_file_base.jinja" %}
+{% import "vaf_interface/macros.jinja" as interface with context %}
+
+{% block includes %}
+#include <atomic>
+#include <mutex>
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "vaf/receiver_handler_container.h"
+#include "vaf/controller_interface.h"
+#include "vaf/data_ptr.h"
+#include "vaf/executable_controller_interface.h"
+#include "vaf/result.h"
+
+#include "silkit/SilKit.hpp"
+#include "silkit/services/all.hpp"
+#include "silkit/services/orchestration/string_utils.hpp"
+#include "silkit/util/serdes/Serialization.hpp"
+#include "protobuf_interface_{{ module.ModuleInterfaceRef.Namespace.replace("::", "_") }}_{{ module.ModuleInterfaceRef.Name }}.pb.h"
+
+{{ interface_file.get_include() }}
+
+{% endblock %}
+
+
+{% block content %}
+class {{ module.Name }} final : public {{ interface_file.get_full_type_name() }}, public vaf::ControlInterface {
+ public:
+  {{ module.Name }}(vaf::Executor& executor, std::string name, vaf::ExecutableControllerInterface& executable_controller_interface);
+  ~{{ module.Name }}() override = default;
+
+  {{ module.Name }}(const {{ module.Name }}&) = delete;
+  {{ module.Name }}({{ module.Name }}&&) = delete;
+  {{ module.Name }}& operator=(const {{ module.Name }}&) = delete;
+  {{ module.Name }}& operator=({{ module.Name }}&&) = delete;
+
+  // Management related operations
+  vaf::Result<void> Init() noexcept override;
+  void Start() noexcept override;
+  void Stop() noexcept override;
+  void DeInit() noexcept override;
+  void StartEventHandlerForModule(const std::string& module) override;
+  void StopEventHandlerForModule(const std::string& module) override;
+
+  {% for de in module.ModuleInterfaceRef.DataElements %}
+  {% set data_type = data_type_to_str(de.TypeRef) %}
+  {{ interface.consumer_data_element_get_allocated(de) }} override;
+  {{ interface.consumer_data_element_get(de) }} override;
+  {{ interface.consumer_data_element_handler(de) }} override;
+  {% endfor %}
+
+  {% for op in module.ModuleInterfaceRef.Operations %}
+  {{ interface.consumer_operation(op, module.ModuleInterfaceRef) }} override;
+  {% endfor %}
+
+ private:
+  vaf::ModuleExecutor& executor_;
+  std::vector<std::string> active_modules_;
+  std::unique_ptr<SilKit::IParticipant> participant_;
+
+  {% for de in module.ModuleInterfaceRef.DataElements %}
+  {% set data_type = data_type_to_str(de.TypeRef) %}
+  {% set de_name = add_namespace_to_name(de.Name, module.ModuleInterfaceRef.Namespace) %}
+  {% if de.InitialValue is none %}
+  ::vaf::ConstDataPtr<const {{ data_type }}> cached_{{ de_name }}_{};
+  {% else %}
+  ::vaf::ConstDataPtr<const {{ data_type }}> cached_{{ de_name }}_{std::make_unique<const {{ data_type }}>({{ data_type }}{{ de.InitialValue }})};
+  {% endif %}
+  std::vector<::vaf::ReceiverHandlerContainer<{{ interface.consumer_data_element_handler_callback(de) }}>> registered_{{ de_name }}_event_handlers_{};
+  std::mutex cached_{{ de_name }}_mutex_;
+  SilKit::Services::PubSub::IDataSubscriber* subscriber_{{ de_name }}_;
+  {% endfor %}
+  {% for op in module.ModuleInterfaceRef.Operations %}
+  {% set op_name = add_namespace_to_name(op.Name, module.ModuleInterfaceRef.Namespace) %}
+  SilKit::Services::Rpc::IRpcClient* rpc_client_{{ op_name }}_;
+  {% endfor %}
+};
+
+{% endblock %}

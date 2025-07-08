@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package protobuf.basetypes;
+
+{% for proto, basetype in proto_translate_dict.items() %}
+message {{proto}} {
+  {{basetype}} vaf_value_internal = 1;
+}
+{% endfor %}

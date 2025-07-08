@@ -1,0 +1,18 @@
+{% extends "common/h_file_base.jinja" %}
+
+{% block includes %}
+{{ base_include }}
+{% endblock %}
+
+{% block content %}
+class {{ app_module.Name }} : public {{ app_module.Name }}Base {
+ public:
+  {{ app_module.Name }}(ConstructorToken&& token);
+
+  {% for r in app_module.Tasks %}
+  void {{ r.Name }}() override;
+  {% endfor %}
+
+ private:
+};
+{% endblock %}

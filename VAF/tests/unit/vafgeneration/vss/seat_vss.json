@@ -1,0 +1,2114 @@
+{
+    "Vehicle": {
+        "children": {
+            "Cabin": {
+                "children": {
+                    "Seat": {
+                        "children": {
+                            "Row1": {
+                                "children": {
+                                    "DriverSide": {
+                                        "children": {
+                                            "Airbag": {
+                                                "children": {
+                                                    "IsDeployed": {
+                                                        "datatype": "boolean",
+                                                        "description": "Airbag deployment status. True = Airbag deployed. False = Airbag not deployed.",
+                                                        "type": "sensor"
+                                                    }
+                                                },
+                                                "description": "Airbag signals.",
+                                                "type": "branch"
+                                            },
+                                            "Backrest": {
+                                                "children": {
+                                                    "Lumbar": {
+                                                        "children": {
+                                                            "Height": {
+                                                                "datatype": "uint8",
+                                                                "description": "Height of lumbar support. Position is relative within available movable range of the lumbar support. 0 = Lowermost position supported.",
+                                                                "min": 0,
+                                                                "type": "actuator",
+                                                                "unit": "mm"
+                                                            },
+                                                            "Support": {
+                                                                "datatype": "float",
+                                                                "description": "Lumbar support (in/out position). 0 = Innermost position. 100 = Outermost position.",
+                                                                "max": 100,
+                                                                "min": 0,
+                                                                "type": "actuator",
+                                                                "unit": "percent"
+                                                            }
+                                                        },
+                                                        "description": "Adjustable lumbar support mechanisms in seats allow the user to change the seat back shape.",
+                                                        "type": "branch"
+                                                    },
+                                                    "Recline": {
+                                                        "comment": "Seat z-axis depends on seat tilt. This means that movement of backrest due to seat tilting will not affect Backrest.Recline as long as the angle between Seating and Backrest are constant. Absolute recline relative to vehicle z-axis can be calculated as Tilt + Backrest.Recline.",
+                                                        "datatype": "float",
+                                                        "description": "Backrest recline compared to seat z-axis (seat vertical axis). 0 degrees = Upright/Vertical backrest. Negative degrees for forward recline. Positive degrees for backward recline.",
+                                                        "type": "actuator",
+                                                        "unit": "degrees"
+                                                    },
+                                                    "SideBolster": {
+                                                        "children": {
+                                                            "Support": {
+                                                                "datatype": "float",
+                                                                "description": "Side bolster support. 0 = Minimum support (widest side bolster setting). 100 = Maximum support.",
+                                                                "max": 100,
+                                                                "min": 0,
+                                                                "type": "actuator",
+                                                                "unit": "percent"
+                                                            }
+                                                        },
+                                                        "description": "Backrest side bolster (lumbar side support) settings.",
+                                                        "type": "branch"
+                                                    }
+                                                },
+                                                "description": "Describes signals related to the backrest of the seat.",
+                                                "type": "branch"
+                                            },
+                                            "Headrest": {
+                                                "children": {
+                                                    "Angle": {
+                                                        "datatype": "float",
+                                                        "description": "Headrest angle, relative to backrest, 0 degrees if parallel to backrest, Positive degrees = tilted forward.",
+                                                        "type": "actuator",
+                                                        "unit": "degrees"
+                                                    },
+                                                    "Height": {
+                                                        "datatype": "uint8",
+                                                        "description": "Position of headrest relative to movable range of the head rest. 0 = Bottommost position supported.",
+                                                        "min": 0,
+                                                        "type": "actuator",
+                                                        "unit": "mm"
+                                                    }
+                                                },
+                                                "description": "Headrest settings.",
+                                                "type": "branch"
+                                            },
+                                            "Heating": {
+                                                "datatype": "int8",
+                                                "deprecation": "v4.1 replaced with HeatingCooling",
+                                                "description": "Seat cooling / heating. 0 = off. -100 = max cold. +100 = max heat.",
+                                                "max": 100,
+                                                "min": -100,
+                                                "type": "actuator",
+                                                "unit": "percent"
+                                            },
+                                            "HeatingCooling": {
+                                                "datatype": "int8",
+                                                "description": "Heating or Cooling requsted for the Item. -100 = Maximum cooling, 0 = Heating/cooling deactivated, 100 = Maximum heating.",
+                                                "max": 100,
+                                                "min": -100,
+                                                "type": "actuator",
+                                                "unit": "percent"
+                                            },
+                                            "Height": {
+                                                "datatype": "uint16",
+                                                "description": "Seat position on vehicle z-axis. Position is relative within available movable range of the seating. 0 = Lowermost position supported.",
+                                                "min": 0,
+                                                "type": "actuator",
+                                                "unit": "mm"
+                                            },
+                                            "IsBelted": {
+                                                "datatype": "boolean",
+                                                "description": "Is the belt engaged.",
+                                                "type": "sensor"
+                                            },
+                                            "IsOccupied": {
+                                                "datatype": "boolean",
+                                                "description": "Does the seat have a passenger in it.",
+                                                "type": "sensor"
+                                            },
+                                            "Massage": {
+                                                "datatype": "uint8",
+                                                "description": "Seat massage level. 0 = off. 100 = max massage.",
+                                                "max": 100,
+                                                "min": 0,
+                                                "type": "actuator",
+                                                "unit": "percent"
+                                            },
+                                            "Occupant": {
+                                                "children": {
+                                                    "Identifier": {
+                                                        "children": {
+                                                            "Issuer": {
+                                                                "datatype": "string",
+                                                                "deprecation": "v5.0 - use data from Vehicle.Occupant.*.*.Identifier.",
+                                                                "description": "Unique Issuer for the authentication of the occupant e.g. https://accounts.funcorp.com.",
+                                                                "type": "sensor"
+                                                            },
+                                                            "Subject": {
+                                                                "datatype": "string",
+                                                                "deprecation": "v5.0 - use data from Vehicle.Occupant.*.*.Identifier.",
+                                                                "description": "Subject for the authentication of the occupant e.g. UserID 7331677.",
+                                                                "type": "sensor"
+                                                            }
+                                                        },
+                                                        "deprecation": "v5.0 - use data from Vehicle.Occupant.*.*.Identifier.",
+                                                        "description": "Identifier attributes based on OAuth 2.0.",
+                                                        "type": "branch"
+                                                    }
+                                                },
+                                                "description": "Occupant data.",
+                                                "type": "branch"
+                                            },
+                                            "Position": {
+                                                "datatype": "uint16",
+                                                "description": "Seat position on vehicle x-axis. Position is relative to the frontmost position supported by the seat. 0 = Frontmost position supported.",
+                                                "min": 0,
+                                                "type": "actuator",
+                                                "unit": "mm"
+                                            },
+                                            "SeatBeltHeight": {
+                                                "datatype": "uint16",
+                                                "description": "Seat belt position on vehicle z-axis. Position is relative within available movable range of the seat belt. 0 = Lowermost position supported.",
+                                                "type": "actuator",
+                                                "unit": "mm"
+                                            },
+                                            "Seating": {
+                                                "children": {
+                                                    "Length": {
+                                                        "datatype": "uint16",
+                                                        "description": "Length adjustment of seating. 0 = Adjustable part of seating in rearmost position (Shortest length of seating).",
+                                                        "min": 0,
+                                                        "type": "actuator",
+                                                        "unit": "mm"
+                                                    }
+                                                },
+                                                "comment": "Seating is here considered as the part of the seat that supports the thighs. Additional cushions (if any) for support of lower legs is not covered by this branch.",
+                                                "description": "Describes signals related to the seat bottom of the seat.",
+                                                "type": "branch"
+                                            },
+                                            "Switch": {
+                                                "children": {
+                                                    "Backrest": {
+                                                        "children": {
+                                                            "IsReclineBackwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Backrest recline backward switch engaged (SingleSeat.Backrest.Recline).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsReclineForwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Backrest recline forward switch engaged (SingleSeat.Backrest.Recline).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "Lumbar": {
+                                                                "children": {
+                                                                    "IsDownEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Lumbar down switch engaged (SingleSeat.Backrest.Lumbar.Support).",
+                                                                        "type": "actuator"
+                                                                    },
+                                                                    "IsLessSupportEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Is switch for less lumbar support engaged (SingleSeat.Backrest.Lumbar.Support).",
+                                                                        "type": "actuator"
+                                                                    },
+                                                                    "IsMoreSupportEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Is switch for more lumbar support engaged (SingleSeat.Backrest.Lumbar.Support).",
+                                                                        "type": "actuator"
+                                                                    },
+                                                                    "IsUpEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Lumbar up switch engaged (SingleSeat.Backrest.Lumbar.Support).",
+                                                                        "type": "actuator"
+                                                                    }
+                                                                },
+                                                                "description": "Switches for SingleSeat.Backrest.Lumbar.",
+                                                                "type": "branch"
+                                                            },
+                                                            "SideBolster": {
+                                                                "children": {
+                                                                    "IsLessSupportEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Is switch for less side bolster support engaged (SingleSeat.Backrest.SideBolster.Support).",
+                                                                        "type": "actuator"
+                                                                    },
+                                                                    "IsMoreSupportEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Is switch for more side bolster support engaged (SingleSeat.Backrest.SideBolster.Support).",
+                                                                        "type": "actuator"
+                                                                    }
+                                                                },
+                                                                "description": "Switches for SingleSeat.Backrest.SideBolster.",
+                                                                "type": "branch"
+                                                            }
+                                                        },
+                                                        "description": "Describes switches related to the backrest of the seat.",
+                                                        "type": "branch"
+                                                    },
+                                                    "Headrest": {
+                                                        "children": {
+                                                            "IsBackwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Head rest backward switch engaged (SingleSeat.Headrest.Angle).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsDownEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Head rest down switch engaged (SingleSeat.Headrest.Height).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsForwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Head rest forward switch engaged (SingleSeat.Headrest.Angle).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsUpEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Head rest up switch engaged (SingleSeat.Headrest.Height).",
+                                                                "type": "actuator"
+                                                            }
+                                                        },
+                                                        "description": "Switches for SingleSeat.Headrest.",
+                                                        "type": "branch"
+                                                    },
+                                                    "IsBackwardEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Seat backward switch engaged (SingleSeat.Position).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsCoolerEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Cooler switch for Seat heater (SingleSeat.Heating).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsDownEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Seat down switch engaged (SingleSeat.Height).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsForwardEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Seat forward switch engaged (SingleSeat.Position).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsTiltBackwardEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Tilt backward switch engaged (SingleSeat.Tilt).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsTiltForwardEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Tilt forward switch engaged (SingleSeat.Tilt).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsUpEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Seat up switch engaged (SingleSeat.Height).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsWarmerEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Warmer switch for Seat heater (SingleSeat.Heating).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "Massage": {
+                                                        "children": {
+                                                            "IsDecreaseEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Decrease massage level switch engaged (SingleSeat.Massage).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsIncreaseEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Increase massage level switch engaged (SingleSeat.Massage).",
+                                                                "type": "actuator"
+                                                            }
+                                                        },
+                                                        "description": "Switches for SingleSeat.Massage.",
+                                                        "type": "branch"
+                                                    },
+                                                    "Seating": {
+                                                        "children": {
+                                                            "IsBackwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Is switch to decrease seating length engaged (SingleSeat.Seating.Length).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsForwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Is switch to increase seating length engaged (SingleSeat.Seating.Length).",
+                                                                "type": "actuator"
+                                                            }
+                                                        },
+                                                        "description": "Describes switches related to the seating of the seat.",
+                                                        "type": "branch"
+                                                    }
+                                                },
+                                                "description": "Seat switch signals",
+                                                "type": "branch"
+                                            },
+                                            "Tilt": {
+                                                "comment": "In VSS it is assumed that tilting a seat affects both seating (seat bottom) and backrest, i.e. the angle between seating and backrest will not be affected when changing Tilt.",
+                                                "datatype": "float",
+                                                "description": "Tilting of seat (seating and backrest) relative to vehicle x-axis. 0 = seat bottom is flat, seat bottom and vehicle x-axis are parallel. Positive degrees = seat tilted backwards, seat x-axis tilted upward, seat z-axis is tilted backward.",
+                                                "type": "actuator",
+                                                "unit": "degrees"
+                                            }
+                                        },
+                                        "description": "All seats.",
+                                        "type": "branch"
+                                    },
+                                    "Middle": {
+                                        "children": {
+                                            "Airbag": {
+                                                "children": {
+                                                    "IsDeployed": {
+                                                        "datatype": "boolean",
+                                                        "description": "Airbag deployment status. True = Airbag deployed. False = Airbag not deployed.",
+                                                        "type": "sensor"
+                                                    }
+                                                },
+                                                "description": "Airbag signals.",
+                                                "type": "branch"
+                                            },
+                                            "Backrest": {
+                                                "children": {
+                                                    "Lumbar": {
+                                                        "children": {
+                                                            "Height": {
+                                                                "datatype": "uint8",
+                                                                "description": "Height of lumbar support. Position is relative within available movable range of the lumbar support. 0 = Lowermost position supported.",
+                                                                "min": 0,
+                                                                "type": "actuator",
+                                                                "unit": "mm"
+                                                            },
+                                                            "Support": {
+                                                                "datatype": "float",
+                                                                "description": "Lumbar support (in/out position). 0 = Innermost position. 100 = Outermost position.",
+                                                                "max": 100,
+                                                                "min": 0,
+                                                                "type": "actuator",
+                                                                "unit": "percent"
+                                                            }
+                                                        },
+                                                        "description": "Adjustable lumbar support mechanisms in seats allow the user to change the seat back shape.",
+                                                        "type": "branch"
+                                                    },
+                                                    "Recline": {
+                                                        "comment": "Seat z-axis depends on seat tilt. This means that movement of backrest due to seat tilting will not affect Backrest.Recline as long as the angle between Seating and Backrest are constant. Absolute recline relative to vehicle z-axis can be calculated as Tilt + Backrest.Recline.",
+                                                        "datatype": "float",
+                                                        "description": "Backrest recline compared to seat z-axis (seat vertical axis). 0 degrees = Upright/Vertical backrest. Negative degrees for forward recline. Positive degrees for backward recline.",
+                                                        "type": "actuator",
+                                                        "unit": "degrees"
+                                                    },
+                                                    "SideBolster": {
+                                                        "children": {
+                                                            "Support": {
+                                                                "datatype": "float",
+                                                                "description": "Side bolster support. 0 = Minimum support (widest side bolster setting). 100 = Maximum support.",
+                                                                "max": 100,
+                                                                "min": 0,
+                                                                "type": "actuator",
+                                                                "unit": "percent"
+                                                            }
+                                                        },
+                                                        "description": "Backrest side bolster (lumbar side support) settings.",
+                                                        "type": "branch"
+                                                    }
+                                                },
+                                                "description": "Describes signals related to the backrest of the seat.",
+                                                "type": "branch"
+                                            },
+                                            "Headrest": {
+                                                "children": {
+                                                    "Angle": {
+                                                        "datatype": "float",
+                                                        "description": "Headrest angle, relative to backrest, 0 degrees if parallel to backrest, Positive degrees = tilted forward.",
+                                                        "type": "actuator",
+                                                        "unit": "degrees"
+                                                    },
+                                                    "Height": {
+                                                        "datatype": "uint8",
+                                                        "description": "Position of headrest relative to movable range of the head rest. 0 = Bottommost position supported.",
+                                                        "min": 0,
+                                                        "type": "actuator",
+                                                        "unit": "mm"
+                                                    }
+                                                },
+                                                "description": "Headrest settings.",
+                                                "type": "branch"
+                                            },
+                                            "Heating": {
+                                                "datatype": "int8",
+                                                "deprecation": "v4.1 replaced with HeatingCooling",
+                                                "description": "Seat cooling / heating. 0 = off. -100 = max cold. +100 = max heat.",
+                                                "max": 100,
+                                                "min": -100,
+                                                "type": "actuator",
+                                                "unit": "percent"
+                                            },
+                                            "HeatingCooling": {
+                                                "datatype": "int8",
+                                                "description": "Heating or Cooling requsted for the Item. -100 = Maximum cooling, 0 = Heating/cooling deactivated, 100 = Maximum heating.",
+                                                "max": 100,
+                                                "min": -100,
+                                                "type": "actuator",
+                                                "unit": "percent"
+                                            },
+                                            "Height": {
+                                                "datatype": "uint16",
+                                                "description": "Seat position on vehicle z-axis. Position is relative within available movable range of the seating. 0 = Lowermost position supported.",
+                                                "min": 0,
+                                                "type": "actuator",
+                                                "unit": "mm"
+                                            },
+                                            "IsBelted": {
+                                                "datatype": "boolean",
+                                                "description": "Is the belt engaged.",
+                                                "type": "sensor"
+                                            },
+                                            "IsOccupied": {
+                                                "datatype": "boolean",
+                                                "description": "Does the seat have a passenger in it.",
+                                                "type": "sensor"
+                                            },
+                                            "Massage": {
+                                                "datatype": "uint8",
+                                                "description": "Seat massage level. 0 = off. 100 = max massage.",
+                                                "max": 100,
+                                                "min": 0,
+                                                "type": "actuator",
+                                                "unit": "percent"
+                                            },
+                                            "Occupant": {
+                                                "children": {
+                                                    "Identifier": {
+                                                        "children": {
+                                                            "Issuer": {
+                                                                "datatype": "string",
+                                                                "deprecation": "v5.0 - use data from Vehicle.Occupant.*.*.Identifier.",
+                                                                "description": "Unique Issuer for the authentication of the occupant e.g. https://accounts.funcorp.com.",
+                                                                "type": "sensor"
+                                                            },
+                                                            "Subject": {
+                                                                "datatype": "string",
+                                                                "deprecation": "v5.0 - use data from Vehicle.Occupant.*.*.Identifier.",
+                                                                "description": "Subject for the authentication of the occupant e.g. UserID 7331677.",
+                                                                "type": "sensor"
+                                                            }
+                                                        },
+                                                        "deprecation": "v5.0 - use data from Vehicle.Occupant.*.*.Identifier.",
+                                                        "description": "Identifier attributes based on OAuth 2.0.",
+                                                        "type": "branch"
+                                                    }
+                                                },
+                                                "description": "Occupant data.",
+                                                "type": "branch"
+                                            },
+                                            "Position": {
+                                                "datatype": "uint16",
+                                                "description": "Seat position on vehicle x-axis. Position is relative to the frontmost position supported by the seat. 0 = Frontmost position supported.",
+                                                "min": 0,
+                                                "type": "actuator",
+                                                "unit": "mm"
+                                            },
+                                            "SeatBeltHeight": {
+                                                "datatype": "uint16",
+                                                "description": "Seat belt position on vehicle z-axis. Position is relative within available movable range of the seat belt. 0 = Lowermost position supported.",
+                                                "type": "actuator",
+                                                "unit": "mm"
+                                            },
+                                            "Seating": {
+                                                "children": {
+                                                    "Length": {
+                                                        "datatype": "uint16",
+                                                        "description": "Length adjustment of seating. 0 = Adjustable part of seating in rearmost position (Shortest length of seating).",
+                                                        "min": 0,
+                                                        "type": "actuator",
+                                                        "unit": "mm"
+                                                    }
+                                                },
+                                                "comment": "Seating is here considered as the part of the seat that supports the thighs. Additional cushions (if any) for support of lower legs is not covered by this branch.",
+                                                "description": "Describes signals related to the seat bottom of the seat.",
+                                                "type": "branch"
+                                            },
+                                            "Switch": {
+                                                "children": {
+                                                    "Backrest": {
+                                                        "children": {
+                                                            "IsReclineBackwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Backrest recline backward switch engaged (SingleSeat.Backrest.Recline).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsReclineForwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Backrest recline forward switch engaged (SingleSeat.Backrest.Recline).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "Lumbar": {
+                                                                "children": {
+                                                                    "IsDownEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Lumbar down switch engaged (SingleSeat.Backrest.Lumbar.Support).",
+                                                                        "type": "actuator"
+                                                                    },
+                                                                    "IsLessSupportEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Is switch for less lumbar support engaged (SingleSeat.Backrest.Lumbar.Support).",
+                                                                        "type": "actuator"
+                                                                    },
+                                                                    "IsMoreSupportEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Is switch for more lumbar support engaged (SingleSeat.Backrest.Lumbar.Support).",
+                                                                        "type": "actuator"
+                                                                    },
+                                                                    "IsUpEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Lumbar up switch engaged (SingleSeat.Backrest.Lumbar.Support).",
+                                                                        "type": "actuator"
+                                                                    }
+                                                                },
+                                                                "description": "Switches for SingleSeat.Backrest.Lumbar.",
+                                                                "type": "branch"
+                                                            },
+                                                            "SideBolster": {
+                                                                "children": {
+                                                                    "IsLessSupportEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Is switch for less side bolster support engaged (SingleSeat.Backrest.SideBolster.Support).",
+                                                                        "type": "actuator"
+                                                                    },
+                                                                    "IsMoreSupportEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Is switch for more side bolster support engaged (SingleSeat.Backrest.SideBolster.Support).",
+                                                                        "type": "actuator"
+                                                                    }
+                                                                },
+                                                                "description": "Switches for SingleSeat.Backrest.SideBolster.",
+                                                                "type": "branch"
+                                                            }
+                                                        },
+                                                        "description": "Describes switches related to the backrest of the seat.",
+                                                        "type": "branch"
+                                                    },
+                                                    "Headrest": {
+                                                        "children": {
+                                                            "IsBackwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Head rest backward switch engaged (SingleSeat.Headrest.Angle).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsDownEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Head rest down switch engaged (SingleSeat.Headrest.Height).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsForwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Head rest forward switch engaged (SingleSeat.Headrest.Angle).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsUpEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Head rest up switch engaged (SingleSeat.Headrest.Height).",
+                                                                "type": "actuator"
+                                                            }
+                                                        },
+                                                        "description": "Switches for SingleSeat.Headrest.",
+                                                        "type": "branch"
+                                                    },
+                                                    "IsBackwardEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Seat backward switch engaged (SingleSeat.Position).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsCoolerEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Cooler switch for Seat heater (SingleSeat.Heating).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsDownEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Seat down switch engaged (SingleSeat.Height).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsForwardEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Seat forward switch engaged (SingleSeat.Position).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsTiltBackwardEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Tilt backward switch engaged (SingleSeat.Tilt).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsTiltForwardEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Tilt forward switch engaged (SingleSeat.Tilt).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsUpEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Seat up switch engaged (SingleSeat.Height).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsWarmerEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Warmer switch for Seat heater (SingleSeat.Heating).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "Massage": {
+                                                        "children": {
+                                                            "IsDecreaseEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Decrease massage level switch engaged (SingleSeat.Massage).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsIncreaseEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Increase massage level switch engaged (SingleSeat.Massage).",
+                                                                "type": "actuator"
+                                                            }
+                                                        },
+                                                        "description": "Switches for SingleSeat.Massage.",
+                                                        "type": "branch"
+                                                    },
+                                                    "Seating": {
+                                                        "children": {
+                                                            "IsBackwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Is switch to decrease seating length engaged (SingleSeat.Seating.Length).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsForwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Is switch to increase seating length engaged (SingleSeat.Seating.Length).",
+                                                                "type": "actuator"
+                                                            }
+                                                        },
+                                                        "description": "Describes switches related to the seating of the seat.",
+                                                        "type": "branch"
+                                                    }
+                                                },
+                                                "description": "Seat switch signals",
+                                                "type": "branch"
+                                            },
+                                            "Tilt": {
+                                                "comment": "In VSS it is assumed that tilting a seat affects both seating (seat bottom) and backrest, i.e. the angle between seating and backrest will not be affected when changing Tilt.",
+                                                "datatype": "float",
+                                                "description": "Tilting of seat (seating and backrest) relative to vehicle x-axis. 0 = seat bottom is flat, seat bottom and vehicle x-axis are parallel. Positive degrees = seat tilted backwards, seat x-axis tilted upward, seat z-axis is tilted backward.",
+                                                "type": "actuator",
+                                                "unit": "degrees"
+                                            }
+                                        },
+                                        "description": "All seats.",
+                                        "type": "branch"
+                                    },
+                                    "PassengerSide": {
+                                        "children": {
+                                            "Airbag": {
+                                                "children": {
+                                                    "IsDeployed": {
+                                                        "datatype": "boolean",
+                                                        "description": "Airbag deployment status. True = Airbag deployed. False = Airbag not deployed.",
+                                                        "type": "sensor"
+                                                    }
+                                                },
+                                                "description": "Airbag signals.",
+                                                "type": "branch"
+                                            },
+                                            "Backrest": {
+                                                "children": {
+                                                    "Lumbar": {
+                                                        "children": {
+                                                            "Height": {
+                                                                "datatype": "uint8",
+                                                                "description": "Height of lumbar support. Position is relative within available movable range of the lumbar support. 0 = Lowermost position supported.",
+                                                                "min": 0,
+                                                                "type": "actuator",
+                                                                "unit": "mm"
+                                                            },
+                                                            "Support": {
+                                                                "datatype": "float",
+                                                                "description": "Lumbar support (in/out position). 0 = Innermost position. 100 = Outermost position.",
+                                                                "max": 100,
+                                                                "min": 0,
+                                                                "type": "actuator",
+                                                                "unit": "percent"
+                                                            }
+                                                        },
+                                                        "description": "Adjustable lumbar support mechanisms in seats allow the user to change the seat back shape.",
+                                                        "type": "branch"
+                                                    },
+                                                    "Recline": {
+                                                        "comment": "Seat z-axis depends on seat tilt. This means that movement of backrest due to seat tilting will not affect Backrest.Recline as long as the angle between Seating and Backrest are constant. Absolute recline relative to vehicle z-axis can be calculated as Tilt + Backrest.Recline.",
+                                                        "datatype": "float",
+                                                        "description": "Backrest recline compared to seat z-axis (seat vertical axis). 0 degrees = Upright/Vertical backrest. Negative degrees for forward recline. Positive degrees for backward recline.",
+                                                        "type": "actuator",
+                                                        "unit": "degrees"
+                                                    },
+                                                    "SideBolster": {
+                                                        "children": {
+                                                            "Support": {
+                                                                "datatype": "float",
+                                                                "description": "Side bolster support. 0 = Minimum support (widest side bolster setting). 100 = Maximum support.",
+                                                                "max": 100,
+                                                                "min": 0,
+                                                                "type": "actuator",
+                                                                "unit": "percent"
+                                                            }
+                                                        },
+                                                        "description": "Backrest side bolster (lumbar side support) settings.",
+                                                        "type": "branch"
+                                                    }
+                                                },
+                                                "description": "Describes signals related to the backrest of the seat.",
+                                                "type": "branch"
+                                            },
+                                            "Headrest": {
+                                                "children": {
+                                                    "Angle": {
+                                                        "datatype": "float",
+                                                        "description": "Headrest angle, relative to backrest, 0 degrees if parallel to backrest, Positive degrees = tilted forward.",
+                                                        "type": "actuator",
+                                                        "unit": "degrees"
+                                                    },
+                                                    "Height": {
+                                                        "datatype": "uint8",
+                                                        "description": "Position of headrest relative to movable range of the head rest. 0 = Bottommost position supported.",
+                                                        "min": 0,
+                                                        "type": "actuator",
+                                                        "unit": "mm"
+                                                    }
+                                                },
+                                                "description": "Headrest settings.",
+                                                "type": "branch"
+                                            },
+                                            "Heating": {
+                                                "datatype": "int8",
+                                                "deprecation": "v4.1 replaced with HeatingCooling",
+                                                "description": "Seat cooling / heating. 0 = off. -100 = max cold. +100 = max heat.",
+                                                "max": 100,
+                                                "min": -100,
+                                                "type": "actuator",
+                                                "unit": "percent"
+                                            },
+                                            "HeatingCooling": {
+                                                "datatype": "int8",
+                                                "description": "Heating or Cooling requsted for the Item. -100 = Maximum cooling, 0 = Heating/cooling deactivated, 100 = Maximum heating.",
+                                                "max": 100,
+                                                "min": -100,
+                                                "type": "actuator",
+                                                "unit": "percent"
+                                            },
+                                            "Height": {
+                                                "datatype": "uint16",
+                                                "description": "Seat position on vehicle z-axis. Position is relative within available movable range of the seating. 0 = Lowermost position supported.",
+                                                "min": 0,
+                                                "type": "actuator",
+                                                "unit": "mm"
+                                            },
+                                            "IsBelted": {
+                                                "datatype": "boolean",
+                                                "description": "Is the belt engaged.",
+                                                "type": "sensor"
+                                            },
+                                            "IsOccupied": {
+                                                "datatype": "boolean",
+                                                "description": "Does the seat have a passenger in it.",
+                                                "type": "sensor"
+                                            },
+                                            "Massage": {
+                                                "datatype": "uint8",
+                                                "description": "Seat massage level. 0 = off. 100 = max massage.",
+                                                "max": 100,
+                                                "min": 0,
+                                                "type": "actuator",
+                                                "unit": "percent"
+                                            },
+                                            "Occupant": {
+                                                "children": {
+                                                    "Identifier": {
+                                                        "children": {
+                                                            "Issuer": {
+                                                                "datatype": "string",
+                                                                "deprecation": "v5.0 - use data from Vehicle.Occupant.*.*.Identifier.",
+                                                                "description": "Unique Issuer for the authentication of the occupant e.g. https://accounts.funcorp.com.",
+                                                                "type": "sensor"
+                                                            },
+                                                            "Subject": {
+                                                                "datatype": "string",
+                                                                "deprecation": "v5.0 - use data from Vehicle.Occupant.*.*.Identifier.",
+                                                                "description": "Subject for the authentication of the occupant e.g. UserID 7331677.",
+                                                                "type": "sensor"
+                                                            }
+                                                        },
+                                                        "deprecation": "v5.0 - use data from Vehicle.Occupant.*.*.Identifier.",
+                                                        "description": "Identifier attributes based on OAuth 2.0.",
+                                                        "type": "branch"
+                                                    }
+                                                },
+                                                "description": "Occupant data.",
+                                                "type": "branch"
+                                            },
+                                            "Position": {
+                                                "datatype": "uint16",
+                                                "description": "Seat position on vehicle x-axis. Position is relative to the frontmost position supported by the seat. 0 = Frontmost position supported.",
+                                                "min": 0,
+                                                "type": "actuator",
+                                                "unit": "mm"
+                                            },
+                                            "SeatBeltHeight": {
+                                                "datatype": "uint16",
+                                                "description": "Seat belt position on vehicle z-axis. Position is relative within available movable range of the seat belt. 0 = Lowermost position supported.",
+                                                "type": "actuator",
+                                                "unit": "mm"
+                                            },
+                                            "Seating": {
+                                                "children": {
+                                                    "Length": {
+                                                        "datatype": "uint16",
+                                                        "description": "Length adjustment of seating. 0 = Adjustable part of seating in rearmost position (Shortest length of seating).",
+                                                        "min": 0,
+                                                        "type": "actuator",
+                                                        "unit": "mm"
+                                                    }
+                                                },
+                                                "comment": "Seating is here considered as the part of the seat that supports the thighs. Additional cushions (if any) for support of lower legs is not covered by this branch.",
+                                                "description": "Describes signals related to the seat bottom of the seat.",
+                                                "type": "branch"
+                                            },
+                                            "Switch": {
+                                                "children": {
+                                                    "Backrest": {
+                                                        "children": {
+                                                            "IsReclineBackwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Backrest recline backward switch engaged (SingleSeat.Backrest.Recline).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsReclineForwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Backrest recline forward switch engaged (SingleSeat.Backrest.Recline).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "Lumbar": {
+                                                                "children": {
+                                                                    "IsDownEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Lumbar down switch engaged (SingleSeat.Backrest.Lumbar.Support).",
+                                                                        "type": "actuator"
+                                                                    },
+                                                                    "IsLessSupportEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Is switch for less lumbar support engaged (SingleSeat.Backrest.Lumbar.Support).",
+                                                                        "type": "actuator"
+                                                                    },
+                                                                    "IsMoreSupportEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Is switch for more lumbar support engaged (SingleSeat.Backrest.Lumbar.Support).",
+                                                                        "type": "actuator"
+                                                                    },
+                                                                    "IsUpEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Lumbar up switch engaged (SingleSeat.Backrest.Lumbar.Support).",
+                                                                        "type": "actuator"
+                                                                    }
+                                                                },
+                                                                "description": "Switches for SingleSeat.Backrest.Lumbar.",
+                                                                "type": "branch"
+                                                            },
+                                                            "SideBolster": {
+                                                                "children": {
+                                                                    "IsLessSupportEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Is switch for less side bolster support engaged (SingleSeat.Backrest.SideBolster.Support).",
+                                                                        "type": "actuator"
+                                                                    },
+                                                                    "IsMoreSupportEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Is switch for more side bolster support engaged (SingleSeat.Backrest.SideBolster.Support).",
+                                                                        "type": "actuator"
+                                                                    }
+                                                                },
+                                                                "description": "Switches for SingleSeat.Backrest.SideBolster.",
+                                                                "type": "branch"
+                                                            }
+                                                        },
+                                                        "description": "Describes switches related to the backrest of the seat.",
+                                                        "type": "branch"
+                                                    },
+                                                    "Headrest": {
+                                                        "children": {
+                                                            "IsBackwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Head rest backward switch engaged (SingleSeat.Headrest.Angle).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsDownEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Head rest down switch engaged (SingleSeat.Headrest.Height).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsForwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Head rest forward switch engaged (SingleSeat.Headrest.Angle).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsUpEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Head rest up switch engaged (SingleSeat.Headrest.Height).",
+                                                                "type": "actuator"
+                                                            }
+                                                        },
+                                                        "description": "Switches for SingleSeat.Headrest.",
+                                                        "type": "branch"
+                                                    },
+                                                    "IsBackwardEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Seat backward switch engaged (SingleSeat.Position).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsCoolerEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Cooler switch for Seat heater (SingleSeat.Heating).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsDownEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Seat down switch engaged (SingleSeat.Height).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsForwardEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Seat forward switch engaged (SingleSeat.Position).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsTiltBackwardEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Tilt backward switch engaged (SingleSeat.Tilt).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsTiltForwardEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Tilt forward switch engaged (SingleSeat.Tilt).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsUpEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Seat up switch engaged (SingleSeat.Height).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsWarmerEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Warmer switch for Seat heater (SingleSeat.Heating).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "Massage": {
+                                                        "children": {
+                                                            "IsDecreaseEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Decrease massage level switch engaged (SingleSeat.Massage).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsIncreaseEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Increase massage level switch engaged (SingleSeat.Massage).",
+                                                                "type": "actuator"
+                                                            }
+                                                        },
+                                                        "description": "Switches for SingleSeat.Massage.",
+                                                        "type": "branch"
+                                                    },
+                                                    "Seating": {
+                                                        "children": {
+                                                            "IsBackwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Is switch to decrease seating length engaged (SingleSeat.Seating.Length).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsForwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Is switch to increase seating length engaged (SingleSeat.Seating.Length).",
+                                                                "type": "actuator"
+                                                            }
+                                                        },
+                                                        "description": "Describes switches related to the seating of the seat.",
+                                                        "type": "branch"
+                                                    }
+                                                },
+                                                "description": "Seat switch signals",
+                                                "type": "branch"
+                                            },
+                                            "Tilt": {
+                                                "comment": "In VSS it is assumed that tilting a seat affects both seating (seat bottom) and backrest, i.e. the angle between seating and backrest will not be affected when changing Tilt.",
+                                                "datatype": "float",
+                                                "description": "Tilting of seat (seating and backrest) relative to vehicle x-axis. 0 = seat bottom is flat, seat bottom and vehicle x-axis are parallel. Positive degrees = seat tilted backwards, seat x-axis tilted upward, seat z-axis is tilted backward.",
+                                                "type": "actuator",
+                                                "unit": "degrees"
+                                            }
+                                        },
+                                        "description": "All seats.",
+                                        "type": "branch"
+                                    }
+                                },
+                                "description": "All seats.",
+                                "type": "branch"
+                            },
+                            "Row2": {
+                                "children": {
+                                    "DriverSide": {
+                                        "children": {
+                                            "Airbag": {
+                                                "children": {
+                                                    "IsDeployed": {
+                                                        "datatype": "boolean",
+                                                        "description": "Airbag deployment status. True = Airbag deployed. False = Airbag not deployed.",
+                                                        "type": "sensor"
+                                                    }
+                                                },
+                                                "description": "Airbag signals.",
+                                                "type": "branch"
+                                            },
+                                            "Backrest": {
+                                                "children": {
+                                                    "Lumbar": {
+                                                        "children": {
+                                                            "Height": {
+                                                                "datatype": "uint8",
+                                                                "description": "Height of lumbar support. Position is relative within available movable range of the lumbar support. 0 = Lowermost position supported.",
+                                                                "min": 0,
+                                                                "type": "actuator",
+                                                                "unit": "mm"
+                                                            },
+                                                            "Support": {
+                                                                "datatype": "float",
+                                                                "description": "Lumbar support (in/out position). 0 = Innermost position. 100 = Outermost position.",
+                                                                "max": 100,
+                                                                "min": 0,
+                                                                "type": "actuator",
+                                                                "unit": "percent"
+                                                            }
+                                                        },
+                                                        "description": "Adjustable lumbar support mechanisms in seats allow the user to change the seat back shape.",
+                                                        "type": "branch"
+                                                    },
+                                                    "Recline": {
+                                                        "comment": "Seat z-axis depends on seat tilt. This means that movement of backrest due to seat tilting will not affect Backrest.Recline as long as the angle between Seating and Backrest are constant. Absolute recline relative to vehicle z-axis can be calculated as Tilt + Backrest.Recline.",
+                                                        "datatype": "float",
+                                                        "description": "Backrest recline compared to seat z-axis (seat vertical axis). 0 degrees = Upright/Vertical backrest. Negative degrees for forward recline. Positive degrees for backward recline.",
+                                                        "type": "actuator",
+                                                        "unit": "degrees"
+                                                    },
+                                                    "SideBolster": {
+                                                        "children": {
+                                                            "Support": {
+                                                                "datatype": "float",
+                                                                "description": "Side bolster support. 0 = Minimum support (widest side bolster setting). 100 = Maximum support.",
+                                                                "max": 100,
+                                                                "min": 0,
+                                                                "type": "actuator",
+                                                                "unit": "percent"
+                                                            }
+                                                        },
+                                                        "description": "Backrest side bolster (lumbar side support) settings.",
+                                                        "type": "branch"
+                                                    }
+                                                },
+                                                "description": "Describes signals related to the backrest of the seat.",
+                                                "type": "branch"
+                                            },
+                                            "Headrest": {
+                                                "children": {
+                                                    "Angle": {
+                                                        "datatype": "float",
+                                                        "description": "Headrest angle, relative to backrest, 0 degrees if parallel to backrest, Positive degrees = tilted forward.",
+                                                        "type": "actuator",
+                                                        "unit": "degrees"
+                                                    },
+                                                    "Height": {
+                                                        "datatype": "uint8",
+                                                        "description": "Position of headrest relative to movable range of the head rest. 0 = Bottommost position supported.",
+                                                        "min": 0,
+                                                        "type": "actuator",
+                                                        "unit": "mm"
+                                                    }
+                                                },
+                                                "description": "Headrest settings.",
+                                                "type": "branch"
+                                            },
+                                            "Heating": {
+                                                "datatype": "int8",
+                                                "deprecation": "v4.1 replaced with HeatingCooling",
+                                                "description": "Seat cooling / heating. 0 = off. -100 = max cold. +100 = max heat.",
+                                                "max": 100,
+                                                "min": -100,
+                                                "type": "actuator",
+                                                "unit": "percent"
+                                            },
+                                            "HeatingCooling": {
+                                                "datatype": "int8",
+                                                "description": "Heating or Cooling requsted for the Item. -100 = Maximum cooling, 0 = Heating/cooling deactivated, 100 = Maximum heating.",
+                                                "max": 100,
+                                                "min": -100,
+                                                "type": "actuator",
+                                                "unit": "percent"
+                                            },
+                                            "Height": {
+                                                "datatype": "uint16",
+                                                "description": "Seat position on vehicle z-axis. Position is relative within available movable range of the seating. 0 = Lowermost position supported.",
+                                                "min": 0,
+                                                "type": "actuator",
+                                                "unit": "mm"
+                                            },
+                                            "IsBelted": {
+                                                "datatype": "boolean",
+                                                "description": "Is the belt engaged.",
+                                                "type": "sensor"
+                                            },
+                                            "IsOccupied": {
+                                                "datatype": "boolean",
+                                                "description": "Does the seat have a passenger in it.",
+                                                "type": "sensor"
+                                            },
+                                            "Massage": {
+                                                "datatype": "uint8",
+                                                "description": "Seat massage level. 0 = off. 100 = max massage.",
+                                                "max": 100,
+                                                "min": 0,
+                                                "type": "actuator",
+                                                "unit": "percent"
+                                            },
+                                            "Occupant": {
+                                                "children": {
+                                                    "Identifier": {
+                                                        "children": {
+                                                            "Issuer": {
+                                                                "datatype": "string",
+                                                                "deprecation": "v5.0 - use data from Vehicle.Occupant.*.*.Identifier.",
+                                                                "description": "Unique Issuer for the authentication of the occupant e.g. https://accounts.funcorp.com.",
+                                                                "type": "sensor"
+                                                            },
+                                                            "Subject": {
+                                                                "datatype": "string",
+                                                                "deprecation": "v5.0 - use data from Vehicle.Occupant.*.*.Identifier.",
+                                                                "description": "Subject for the authentication of the occupant e.g. UserID 7331677.",
+                                                                "type": "sensor"
+                                                            }
+                                                        },
+                                                        "deprecation": "v5.0 - use data from Vehicle.Occupant.*.*.Identifier.",
+                                                        "description": "Identifier attributes based on OAuth 2.0.",
+                                                        "type": "branch"
+                                                    }
+                                                },
+                                                "description": "Occupant data.",
+                                                "type": "branch"
+                                            },
+                                            "Position": {
+                                                "datatype": "uint16",
+                                                "description": "Seat position on vehicle x-axis. Position is relative to the frontmost position supported by the seat. 0 = Frontmost position supported.",
+                                                "min": 0,
+                                                "type": "actuator",
+                                                "unit": "mm"
+                                            },
+                                            "SeatBeltHeight": {
+                                                "datatype": "uint16",
+                                                "description": "Seat belt position on vehicle z-axis. Position is relative within available movable range of the seat belt. 0 = Lowermost position supported.",
+                                                "type": "actuator",
+                                                "unit": "mm"
+                                            },
+                                            "Seating": {
+                                                "children": {
+                                                    "Length": {
+                                                        "datatype": "uint16",
+                                                        "description": "Length adjustment of seating. 0 = Adjustable part of seating in rearmost position (Shortest length of seating).",
+                                                        "min": 0,
+                                                        "type": "actuator",
+                                                        "unit": "mm"
+                                                    }
+                                                },
+                                                "comment": "Seating is here considered as the part of the seat that supports the thighs. Additional cushions (if any) for support of lower legs is not covered by this branch.",
+                                                "description": "Describes signals related to the seat bottom of the seat.",
+                                                "type": "branch"
+                                            },
+                                            "Switch": {
+                                                "children": {
+                                                    "Backrest": {
+                                                        "children": {
+                                                            "IsReclineBackwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Backrest recline backward switch engaged (SingleSeat.Backrest.Recline).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsReclineForwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Backrest recline forward switch engaged (SingleSeat.Backrest.Recline).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "Lumbar": {
+                                                                "children": {
+                                                                    "IsDownEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Lumbar down switch engaged (SingleSeat.Backrest.Lumbar.Support).",
+                                                                        "type": "actuator"
+                                                                    },
+                                                                    "IsLessSupportEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Is switch for less lumbar support engaged (SingleSeat.Backrest.Lumbar.Support).",
+                                                                        "type": "actuator"
+                                                                    },
+                                                                    "IsMoreSupportEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Is switch for more lumbar support engaged (SingleSeat.Backrest.Lumbar.Support).",
+                                                                        "type": "actuator"
+                                                                    },
+                                                                    "IsUpEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Lumbar up switch engaged (SingleSeat.Backrest.Lumbar.Support).",
+                                                                        "type": "actuator"
+                                                                    }
+                                                                },
+                                                                "description": "Switches for SingleSeat.Backrest.Lumbar.",
+                                                                "type": "branch"
+                                                            },
+                                                            "SideBolster": {
+                                                                "children": {
+                                                                    "IsLessSupportEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Is switch for less side bolster support engaged (SingleSeat.Backrest.SideBolster.Support).",
+                                                                        "type": "actuator"
+                                                                    },
+                                                                    "IsMoreSupportEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Is switch for more side bolster support engaged (SingleSeat.Backrest.SideBolster.Support).",
+                                                                        "type": "actuator"
+                                                                    }
+                                                                },
+                                                                "description": "Switches for SingleSeat.Backrest.SideBolster.",
+                                                                "type": "branch"
+                                                            }
+                                                        },
+                                                        "description": "Describes switches related to the backrest of the seat.",
+                                                        "type": "branch"
+                                                    },
+                                                    "Headrest": {
+                                                        "children": {
+                                                            "IsBackwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Head rest backward switch engaged (SingleSeat.Headrest.Angle).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsDownEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Head rest down switch engaged (SingleSeat.Headrest.Height).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsForwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Head rest forward switch engaged (SingleSeat.Headrest.Angle).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsUpEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Head rest up switch engaged (SingleSeat.Headrest.Height).",
+                                                                "type": "actuator"
+                                                            }
+                                                        },
+                                                        "description": "Switches for SingleSeat.Headrest.",
+                                                        "type": "branch"
+                                                    },
+                                                    "IsBackwardEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Seat backward switch engaged (SingleSeat.Position).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsCoolerEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Cooler switch for Seat heater (SingleSeat.Heating).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsDownEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Seat down switch engaged (SingleSeat.Height).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsForwardEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Seat forward switch engaged (SingleSeat.Position).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsTiltBackwardEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Tilt backward switch engaged (SingleSeat.Tilt).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsTiltForwardEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Tilt forward switch engaged (SingleSeat.Tilt).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsUpEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Seat up switch engaged (SingleSeat.Height).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsWarmerEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Warmer switch for Seat heater (SingleSeat.Heating).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "Massage": {
+                                                        "children": {
+                                                            "IsDecreaseEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Decrease massage level switch engaged (SingleSeat.Massage).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsIncreaseEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Increase massage level switch engaged (SingleSeat.Massage).",
+                                                                "type": "actuator"
+                                                            }
+                                                        },
+                                                        "description": "Switches for SingleSeat.Massage.",
+                                                        "type": "branch"
+                                                    },
+                                                    "Seating": {
+                                                        "children": {
+                                                            "IsBackwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Is switch to decrease seating length engaged (SingleSeat.Seating.Length).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsForwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Is switch to increase seating length engaged (SingleSeat.Seating.Length).",
+                                                                "type": "actuator"
+                                                            }
+                                                        },
+                                                        "description": "Describes switches related to the seating of the seat.",
+                                                        "type": "branch"
+                                                    }
+                                                },
+                                                "description": "Seat switch signals",
+                                                "type": "branch"
+                                            },
+                                            "Tilt": {
+                                                "comment": "In VSS it is assumed that tilting a seat affects both seating (seat bottom) and backrest, i.e. the angle between seating and backrest will not be affected when changing Tilt.",
+                                                "datatype": "float",
+                                                "description": "Tilting of seat (seating and backrest) relative to vehicle x-axis. 0 = seat bottom is flat, seat bottom and vehicle x-axis are parallel. Positive degrees = seat tilted backwards, seat x-axis tilted upward, seat z-axis is tilted backward.",
+                                                "type": "actuator",
+                                                "unit": "degrees"
+                                            }
+                                        },
+                                        "description": "All seats.",
+                                        "type": "branch"
+                                    },
+                                    "Middle": {
+                                        "children": {
+                                            "Airbag": {
+                                                "children": {
+                                                    "IsDeployed": {
+                                                        "datatype": "boolean",
+                                                        "description": "Airbag deployment status. True = Airbag deployed. False = Airbag not deployed.",
+                                                        "type": "sensor"
+                                                    }
+                                                },
+                                                "description": "Airbag signals.",
+                                                "type": "branch"
+                                            },
+                                            "Backrest": {
+                                                "children": {
+                                                    "Lumbar": {
+                                                        "children": {
+                                                            "Height": {
+                                                                "datatype": "uint8",
+                                                                "description": "Height of lumbar support. Position is relative within available movable range of the lumbar support. 0 = Lowermost position supported.",
+                                                                "min": 0,
+                                                                "type": "actuator",
+                                                                "unit": "mm"
+                                                            },
+                                                            "Support": {
+                                                                "datatype": "float",
+                                                                "description": "Lumbar support (in/out position). 0 = Innermost position. 100 = Outermost position.",
+                                                                "max": 100,
+                                                                "min": 0,
+                                                                "type": "actuator",
+                                                                "unit": "percent"
+                                                            }
+                                                        },
+                                                        "description": "Adjustable lumbar support mechanisms in seats allow the user to change the seat back shape.",
+                                                        "type": "branch"
+                                                    },
+                                                    "Recline": {
+                                                        "comment": "Seat z-axis depends on seat tilt. This means that movement of backrest due to seat tilting will not affect Backrest.Recline as long as the angle between Seating and Backrest are constant. Absolute recline relative to vehicle z-axis can be calculated as Tilt + Backrest.Recline.",
+                                                        "datatype": "float",
+                                                        "description": "Backrest recline compared to seat z-axis (seat vertical axis). 0 degrees = Upright/Vertical backrest. Negative degrees for forward recline. Positive degrees for backward recline.",
+                                                        "type": "actuator",
+                                                        "unit": "degrees"
+                                                    },
+                                                    "SideBolster": {
+                                                        "children": {
+                                                            "Support": {
+                                                                "datatype": "float",
+                                                                "description": "Side bolster support. 0 = Minimum support (widest side bolster setting). 100 = Maximum support.",
+                                                                "max": 100,
+                                                                "min": 0,
+                                                                "type": "actuator",
+                                                                "unit": "percent"
+                                                            }
+                                                        },
+                                                        "description": "Backrest side bolster (lumbar side support) settings.",
+                                                        "type": "branch"
+                                                    }
+                                                },
+                                                "description": "Describes signals related to the backrest of the seat.",
+                                                "type": "branch"
+                                            },
+                                            "Headrest": {
+                                                "children": {
+                                                    "Angle": {
+                                                        "datatype": "float",
+                                                        "description": "Headrest angle, relative to backrest, 0 degrees if parallel to backrest, Positive degrees = tilted forward.",
+                                                        "type": "actuator",
+                                                        "unit": "degrees"
+                                                    },
+                                                    "Height": {
+                                                        "datatype": "uint8",
+                                                        "description": "Position of headrest relative to movable range of the head rest. 0 = Bottommost position supported.",
+                                                        "min": 0,
+                                                        "type": "actuator",
+                                                        "unit": "mm"
+                                                    }
+                                                },
+                                                "description": "Headrest settings.",
+                                                "type": "branch"
+                                            },
+                                            "Heating": {
+                                                "datatype": "int8",
+                                                "deprecation": "v4.1 replaced with HeatingCooling",
+                                                "description": "Seat cooling / heating. 0 = off. -100 = max cold. +100 = max heat.",
+                                                "max": 100,
+                                                "min": -100,
+                                                "type": "actuator",
+                                                "unit": "percent"
+                                            },
+                                            "HeatingCooling": {
+                                                "datatype": "int8",
+                                                "description": "Heating or Cooling requsted for the Item. -100 = Maximum cooling, 0 = Heating/cooling deactivated, 100 = Maximum heating.",
+                                                "max": 100,
+                                                "min": -100,
+                                                "type": "actuator",
+                                                "unit": "percent"
+                                            },
+                                            "Height": {
+                                                "datatype": "uint16",
+                                                "description": "Seat position on vehicle z-axis. Position is relative within available movable range of the seating. 0 = Lowermost position supported.",
+                                                "min": 0,
+                                                "type": "actuator",
+                                                "unit": "mm"
+                                            },
+                                            "IsBelted": {
+                                                "datatype": "boolean",
+                                                "description": "Is the belt engaged.",
+                                                "type": "sensor"
+                                            },
+                                            "IsOccupied": {
+                                                "datatype": "boolean",
+                                                "description": "Does the seat have a passenger in it.",
+                                                "type": "sensor"
+                                            },
+                                            "Massage": {
+                                                "datatype": "uint8",
+                                                "description": "Seat massage level. 0 = off. 100 = max massage.",
+                                                "max": 100,
+                                                "min": 0,
+                                                "type": "actuator",
+                                                "unit": "percent"
+                                            },
+                                            "Occupant": {
+                                                "children": {
+                                                    "Identifier": {
+                                                        "children": {
+                                                            "Issuer": {
+                                                                "datatype": "string",
+                                                                "deprecation": "v5.0 - use data from Vehicle.Occupant.*.*.Identifier.",
+                                                                "description": "Unique Issuer for the authentication of the occupant e.g. https://accounts.funcorp.com.",
+                                                                "type": "sensor"
+                                                            },
+                                                            "Subject": {
+                                                                "datatype": "string",
+                                                                "deprecation": "v5.0 - use data from Vehicle.Occupant.*.*.Identifier.",
+                                                                "description": "Subject for the authentication of the occupant e.g. UserID 7331677.",
+                                                                "type": "sensor"
+                                                            }
+                                                        },
+                                                        "deprecation": "v5.0 - use data from Vehicle.Occupant.*.*.Identifier.",
+                                                        "description": "Identifier attributes based on OAuth 2.0.",
+                                                        "type": "branch"
+                                                    }
+                                                },
+                                                "description": "Occupant data.",
+                                                "type": "branch"
+                                            },
+                                            "Position": {
+                                                "datatype": "uint16",
+                                                "description": "Seat position on vehicle x-axis. Position is relative to the frontmost position supported by the seat. 0 = Frontmost position supported.",
+                                                "min": 0,
+                                                "type": "actuator",
+                                                "unit": "mm"
+                                            },
+                                            "SeatBeltHeight": {
+                                                "datatype": "uint16",
+                                                "description": "Seat belt position on vehicle z-axis. Position is relative within available movable range of the seat belt. 0 = Lowermost position supported.",
+                                                "type": "actuator",
+                                                "unit": "mm"
+                                            },
+                                            "Seating": {
+                                                "children": {
+                                                    "Length": {
+                                                        "datatype": "uint16",
+                                                        "description": "Length adjustment of seating. 0 = Adjustable part of seating in rearmost position (Shortest length of seating).",
+                                                        "min": 0,
+                                                        "type": "actuator",
+                                                        "unit": "mm"
+                                                    }
+                                                },
+                                                "comment": "Seating is here considered as the part of the seat that supports the thighs. Additional cushions (if any) for support of lower legs is not covered by this branch.",
+                                                "description": "Describes signals related to the seat bottom of the seat.",
+                                                "type": "branch"
+                                            },
+                                            "Switch": {
+                                                "children": {
+                                                    "Backrest": {
+                                                        "children": {
+                                                            "IsReclineBackwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Backrest recline backward switch engaged (SingleSeat.Backrest.Recline).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsReclineForwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Backrest recline forward switch engaged (SingleSeat.Backrest.Recline).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "Lumbar": {
+                                                                "children": {
+                                                                    "IsDownEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Lumbar down switch engaged (SingleSeat.Backrest.Lumbar.Support).",
+                                                                        "type": "actuator"
+                                                                    },
+                                                                    "IsLessSupportEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Is switch for less lumbar support engaged (SingleSeat.Backrest.Lumbar.Support).",
+                                                                        "type": "actuator"
+                                                                    },
+                                                                    "IsMoreSupportEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Is switch for more lumbar support engaged (SingleSeat.Backrest.Lumbar.Support).",
+                                                                        "type": "actuator"
+                                                                    },
+                                                                    "IsUpEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Lumbar up switch engaged (SingleSeat.Backrest.Lumbar.Support).",
+                                                                        "type": "actuator"
+                                                                    }
+                                                                },
+                                                                "description": "Switches for SingleSeat.Backrest.Lumbar.",
+                                                                "type": "branch"
+                                                            },
+                                                            "SideBolster": {
+                                                                "children": {
+                                                                    "IsLessSupportEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Is switch for less side bolster support engaged (SingleSeat.Backrest.SideBolster.Support).",
+                                                                        "type": "actuator"
+                                                                    },
+                                                                    "IsMoreSupportEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Is switch for more side bolster support engaged (SingleSeat.Backrest.SideBolster.Support).",
+                                                                        "type": "actuator"
+                                                                    }
+                                                                },
+                                                                "description": "Switches for SingleSeat.Backrest.SideBolster.",
+                                                                "type": "branch"
+                                                            }
+                                                        },
+                                                        "description": "Describes switches related to the backrest of the seat.",
+                                                        "type": "branch"
+                                                    },
+                                                    "Headrest": {
+                                                        "children": {
+                                                            "IsBackwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Head rest backward switch engaged (SingleSeat.Headrest.Angle).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsDownEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Head rest down switch engaged (SingleSeat.Headrest.Height).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsForwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Head rest forward switch engaged (SingleSeat.Headrest.Angle).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsUpEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Head rest up switch engaged (SingleSeat.Headrest.Height).",
+                                                                "type": "actuator"
+                                                            }
+                                                        },
+                                                        "description": "Switches for SingleSeat.Headrest.",
+                                                        "type": "branch"
+                                                    },
+                                                    "IsBackwardEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Seat backward switch engaged (SingleSeat.Position).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsCoolerEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Cooler switch for Seat heater (SingleSeat.Heating).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsDownEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Seat down switch engaged (SingleSeat.Height).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsForwardEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Seat forward switch engaged (SingleSeat.Position).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsTiltBackwardEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Tilt backward switch engaged (SingleSeat.Tilt).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsTiltForwardEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Tilt forward switch engaged (SingleSeat.Tilt).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsUpEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Seat up switch engaged (SingleSeat.Height).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsWarmerEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Warmer switch for Seat heater (SingleSeat.Heating).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "Massage": {
+                                                        "children": {
+                                                            "IsDecreaseEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Decrease massage level switch engaged (SingleSeat.Massage).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsIncreaseEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Increase massage level switch engaged (SingleSeat.Massage).",
+                                                                "type": "actuator"
+                                                            }
+                                                        },
+                                                        "description": "Switches for SingleSeat.Massage.",
+                                                        "type": "branch"
+                                                    },
+                                                    "Seating": {
+                                                        "children": {
+                                                            "IsBackwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Is switch to decrease seating length engaged (SingleSeat.Seating.Length).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsForwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Is switch to increase seating length engaged (SingleSeat.Seating.Length).",
+                                                                "type": "actuator"
+                                                            }
+                                                        },
+                                                        "description": "Describes switches related to the seating of the seat.",
+                                                        "type": "branch"
+                                                    }
+                                                },
+                                                "description": "Seat switch signals",
+                                                "type": "branch"
+                                            },
+                                            "Tilt": {
+                                                "comment": "In VSS it is assumed that tilting a seat affects both seating (seat bottom) and backrest, i.e. the angle between seating and backrest will not be affected when changing Tilt.",
+                                                "datatype": "float",
+                                                "description": "Tilting of seat (seating and backrest) relative to vehicle x-axis. 0 = seat bottom is flat, seat bottom and vehicle x-axis are parallel. Positive degrees = seat tilted backwards, seat x-axis tilted upward, seat z-axis is tilted backward.",
+                                                "type": "actuator",
+                                                "unit": "degrees"
+                                            }
+                                        },
+                                        "description": "All seats.",
+                                        "type": "branch"
+                                    },
+                                    "PassengerSide": {
+                                        "children": {
+                                            "Airbag": {
+                                                "children": {
+                                                    "IsDeployed": {
+                                                        "datatype": "boolean",
+                                                        "description": "Airbag deployment status. True = Airbag deployed. False = Airbag not deployed.",
+                                                        "type": "sensor"
+                                                    }
+                                                },
+                                                "description": "Airbag signals.",
+                                                "type": "branch"
+                                            },
+                                            "Backrest": {
+                                                "children": {
+                                                    "Lumbar": {
+                                                        "children": {
+                                                            "Height": {
+                                                                "datatype": "uint8",
+                                                                "description": "Height of lumbar support. Position is relative within available movable range of the lumbar support. 0 = Lowermost position supported.",
+                                                                "min": 0,
+                                                                "type": "actuator",
+                                                                "unit": "mm"
+                                                            },
+                                                            "Support": {
+                                                                "datatype": "float",
+                                                                "description": "Lumbar support (in/out position). 0 = Innermost position. 100 = Outermost position.",
+                                                                "max": 100,
+                                                                "min": 0,
+                                                                "type": "actuator",
+                                                                "unit": "percent"
+                                                            }
+                                                        },
+                                                        "description": "Adjustable lumbar support mechanisms in seats allow the user to change the seat back shape.",
+                                                        "type": "branch"
+                                                    },
+                                                    "Recline": {
+                                                        "comment": "Seat z-axis depends on seat tilt. This means that movement of backrest due to seat tilting will not affect Backrest.Recline as long as the angle between Seating and Backrest are constant. Absolute recline relative to vehicle z-axis can be calculated as Tilt + Backrest.Recline.",
+                                                        "datatype": "float",
+                                                        "description": "Backrest recline compared to seat z-axis (seat vertical axis). 0 degrees = Upright/Vertical backrest. Negative degrees for forward recline. Positive degrees for backward recline.",
+                                                        "type": "actuator",
+                                                        "unit": "degrees"
+                                                    },
+                                                    "SideBolster": {
+                                                        "children": {
+                                                            "Support": {
+                                                                "datatype": "float",
+                                                                "description": "Side bolster support. 0 = Minimum support (widest side bolster setting). 100 = Maximum support.",
+                                                                "max": 100,
+                                                                "min": 0,
+                                                                "type": "actuator",
+                                                                "unit": "percent"
+                                                            }
+                                                        },
+                                                        "description": "Backrest side bolster (lumbar side support) settings.",
+                                                        "type": "branch"
+                                                    }
+                                                },
+                                                "description": "Describes signals related to the backrest of the seat.",
+                                                "type": "branch"
+                                            },
+                                            "Headrest": {
+                                                "children": {
+                                                    "Angle": {
+                                                        "datatype": "float",
+                                                        "description": "Headrest angle, relative to backrest, 0 degrees if parallel to backrest, Positive degrees = tilted forward.",
+                                                        "type": "actuator",
+                                                        "unit": "degrees"
+                                                    },
+                                                    "Height": {
+                                                        "datatype": "uint8",
+                                                        "description": "Position of headrest relative to movable range of the head rest. 0 = Bottommost position supported.",
+                                                        "min": 0,
+                                                        "type": "actuator",
+                                                        "unit": "mm"
+                                                    }
+                                                },
+                                                "description": "Headrest settings.",
+                                                "type": "branch"
+                                            },
+                                            "Heating": {
+                                                "datatype": "int8",
+                                                "deprecation": "v4.1 replaced with HeatingCooling",
+                                                "description": "Seat cooling / heating. 0 = off. -100 = max cold. +100 = max heat.",
+                                                "max": 100,
+                                                "min": -100,
+                                                "type": "actuator",
+                                                "unit": "percent"
+                                            },
+                                            "HeatingCooling": {
+                                                "datatype": "int8",
+                                                "description": "Heating or Cooling requsted for the Item. -100 = Maximum cooling, 0 = Heating/cooling deactivated, 100 = Maximum heating.",
+                                                "max": 100,
+                                                "min": -100,
+                                                "type": "actuator",
+                                                "unit": "percent"
+                                            },
+                                            "Height": {
+                                                "datatype": "uint16",
+                                                "description": "Seat position on vehicle z-axis. Position is relative within available movable range of the seating. 0 = Lowermost position supported.",
+                                                "min": 0,
+                                                "type": "actuator",
+                                                "unit": "mm"
+                                            },
+                                            "IsBelted": {
+                                                "datatype": "boolean",
+                                                "description": "Is the belt engaged.",
+                                                "type": "sensor"
+                                            },
+                                            "IsOccupied": {
+                                                "datatype": "boolean",
+                                                "description": "Does the seat have a passenger in it.",
+                                                "type": "sensor"
+                                            },
+                                            "Massage": {
+                                                "datatype": "uint8",
+                                                "description": "Seat massage level. 0 = off. 100 = max massage.",
+                                                "max": 100,
+                                                "min": 0,
+                                                "type": "actuator",
+                                                "unit": "percent"
+                                            },
+                                            "Occupant": {
+                                                "children": {
+                                                    "Identifier": {
+                                                        "children": {
+                                                            "Issuer": {
+                                                                "datatype": "string",
+                                                                "deprecation": "v5.0 - use data from Vehicle.Occupant.*.*.Identifier.",
+                                                                "description": "Unique Issuer for the authentication of the occupant e.g. https://accounts.funcorp.com.",
+                                                                "type": "sensor"
+                                                            },
+                                                            "Subject": {
+                                                                "datatype": "string",
+                                                                "deprecation": "v5.0 - use data from Vehicle.Occupant.*.*.Identifier.",
+                                                                "description": "Subject for the authentication of the occupant e.g. UserID 7331677.",
+                                                                "type": "sensor"
+                                                            }
+                                                        },
+                                                        "deprecation": "v5.0 - use data from Vehicle.Occupant.*.*.Identifier.",
+                                                        "description": "Identifier attributes based on OAuth 2.0.",
+                                                        "type": "branch"
+                                                    }
+                                                },
+                                                "description": "Occupant data.",
+                                                "type": "branch"
+                                            },
+                                            "Position": {
+                                                "datatype": "uint16",
+                                                "description": "Seat position on vehicle x-axis. Position is relative to the frontmost position supported by the seat. 0 = Frontmost position supported.",
+                                                "min": 0,
+                                                "type": "actuator",
+                                                "unit": "mm"
+                                            },
+                                            "SeatBeltHeight": {
+                                                "datatype": "uint16",
+                                                "description": "Seat belt position on vehicle z-axis. Position is relative within available movable range of the seat belt. 0 = Lowermost position supported.",
+                                                "type": "actuator",
+                                                "unit": "mm"
+                                            },
+                                            "Seating": {
+                                                "children": {
+                                                    "Length": {
+                                                        "datatype": "uint16",
+                                                        "description": "Length adjustment of seating. 0 = Adjustable part of seating in rearmost position (Shortest length of seating).",
+                                                        "min": 0,
+                                                        "type": "actuator",
+                                                        "unit": "mm"
+                                                    }
+                                                },
+                                                "comment": "Seating is here considered as the part of the seat that supports the thighs. Additional cushions (if any) for support of lower legs is not covered by this branch.",
+                                                "description": "Describes signals related to the seat bottom of the seat.",
+                                                "type": "branch"
+                                            },
+                                            "Switch": {
+                                                "children": {
+                                                    "Backrest": {
+                                                        "children": {
+                                                            "IsReclineBackwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Backrest recline backward switch engaged (SingleSeat.Backrest.Recline).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsReclineForwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Backrest recline forward switch engaged (SingleSeat.Backrest.Recline).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "Lumbar": {
+                                                                "children": {
+                                                                    "IsDownEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Lumbar down switch engaged (SingleSeat.Backrest.Lumbar.Support).",
+                                                                        "type": "actuator"
+                                                                    },
+                                                                    "IsLessSupportEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Is switch for less lumbar support engaged (SingleSeat.Backrest.Lumbar.Support).",
+                                                                        "type": "actuator"
+                                                                    },
+                                                                    "IsMoreSupportEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Is switch for more lumbar support engaged (SingleSeat.Backrest.Lumbar.Support).",
+                                                                        "type": "actuator"
+                                                                    },
+                                                                    "IsUpEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Lumbar up switch engaged (SingleSeat.Backrest.Lumbar.Support).",
+                                                                        "type": "actuator"
+                                                                    }
+                                                                },
+                                                                "description": "Switches for SingleSeat.Backrest.Lumbar.",
+                                                                "type": "branch"
+                                                            },
+                                                            "SideBolster": {
+                                                                "children": {
+                                                                    "IsLessSupportEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Is switch for less side bolster support engaged (SingleSeat.Backrest.SideBolster.Support).",
+                                                                        "type": "actuator"
+                                                                    },
+                                                                    "IsMoreSupportEngaged": {
+                                                                        "datatype": "boolean",
+                                                                        "description": "Is switch for more side bolster support engaged (SingleSeat.Backrest.SideBolster.Support).",
+                                                                        "type": "actuator"
+                                                                    }
+                                                                },
+                                                                "description": "Switches for SingleSeat.Backrest.SideBolster.",
+                                                                "type": "branch"
+                                                            }
+                                                        },
+                                                        "description": "Describes switches related to the backrest of the seat.",
+                                                        "type": "branch"
+                                                    },
+                                                    "Headrest": {
+                                                        "children": {
+                                                            "IsBackwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Head rest backward switch engaged (SingleSeat.Headrest.Angle).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsDownEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Head rest down switch engaged (SingleSeat.Headrest.Height).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsForwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Head rest forward switch engaged (SingleSeat.Headrest.Angle).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsUpEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Head rest up switch engaged (SingleSeat.Headrest.Height).",
+                                                                "type": "actuator"
+                                                            }
+                                                        },
+                                                        "description": "Switches for SingleSeat.Headrest.",
+                                                        "type": "branch"
+                                                    },
+                                                    "IsBackwardEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Seat backward switch engaged (SingleSeat.Position).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsCoolerEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Cooler switch for Seat heater (SingleSeat.Heating).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsDownEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Seat down switch engaged (SingleSeat.Height).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsForwardEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Seat forward switch engaged (SingleSeat.Position).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsTiltBackwardEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Tilt backward switch engaged (SingleSeat.Tilt).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsTiltForwardEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Tilt forward switch engaged (SingleSeat.Tilt).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsUpEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Seat up switch engaged (SingleSeat.Height).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "IsWarmerEngaged": {
+                                                        "datatype": "boolean",
+                                                        "description": "Warmer switch for Seat heater (SingleSeat.Heating).",
+                                                        "type": "actuator"
+                                                    },
+                                                    "Massage": {
+                                                        "children": {
+                                                            "IsDecreaseEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Decrease massage level switch engaged (SingleSeat.Massage).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsIncreaseEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Increase massage level switch engaged (SingleSeat.Massage).",
+                                                                "type": "actuator"
+                                                            }
+                                                        },
+                                                        "description": "Switches for SingleSeat.Massage.",
+                                                        "type": "branch"
+                                                    },
+                                                    "Seating": {
+                                                        "children": {
+                                                            "IsBackwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Is switch to decrease seating length engaged (SingleSeat.Seating.Length).",
+                                                                "type": "actuator"
+                                                            },
+                                                            "IsForwardEngaged": {
+                                                                "datatype": "boolean",
+                                                                "description": "Is switch to increase seating length engaged (SingleSeat.Seating.Length).",
+                                                                "type": "actuator"
+                                                            }
+                                                        },
+                                                        "description": "Describes switches related to the seating of the seat.",
+                                                        "type": "branch"
+                                                    }
+                                                },
+                                                "description": "Seat switch signals",
+                                                "type": "branch"
+                                            },
+                                            "Tilt": {
+                                                "comment": "In VSS it is assumed that tilting a seat affects both seating (seat bottom) and backrest, i.e. the angle between seating and backrest will not be affected when changing Tilt.",
+                                                "datatype": "float",
+                                                "description": "Tilting of seat (seating and backrest) relative to vehicle x-axis. 0 = seat bottom is flat, seat bottom and vehicle x-axis are parallel. Positive degrees = seat tilted backwards, seat x-axis tilted upward, seat z-axis is tilted backward.",
+                                                "type": "actuator",
+                                                "unit": "degrees"
+                                            }
+                                        },
+                                        "description": "All seats.",
+                                        "type": "branch"
+                                    }
+                                },
+                                "description": "All seats.",
+                                "type": "branch"
+                            }
+                        },
+                        "description": "All seats.",
+                        "type": "branch"
+                    }
+                },
+                "description": "All in-cabin components, including doors.",
+                "type": "branch"
+            }
+        },
+        "description": "High-level vehicle data.",
+        "type": "branch"
+    }
+}
