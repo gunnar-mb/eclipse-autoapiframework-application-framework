@@ -1,0 +1,14 @@
+{% extends "common/h_file_base.jinja" %}
+
+{% block includes %}
+#include <map>
+
+{{ get_data_type_include_from_type_ref(vaf_map.MapKeyTypeRef) }}
+{{ get_data_type_include_from_type_ref(vaf_map.MapValueTypeRef) }}
+{% endblock %}
+
+{% set type_ref_type = get_file_helper(vaf_map.MapKeyTypeRef) %}
+{% set value_ref_type = get_file_helper(vaf_map.MapValueTypeRef) %}
+{% block content %}
+using {{ vaf_map.Name }} = std::map<{{ type_ref_type.get_full_type_name() }}, {{ value_ref_type.get_full_type_name() }}>;
+{% endblock %}

@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+{% for import in imports %}
+import "protobuf_{{ import.replace("::","_") }}.proto";
+{% endfor %}
+
+package protobuf.{{ package }};
+
+{% for array in namespace_data.get("Arrays", {}).values() %}
+{% set type=data_type_to_proto_type(array.TypeRef) %}
+message {{ array.Name }} {
+  repeated {{ type }} vaf_value_internal = 1;
+}
+{% endfor %}
+{% for vector in namespace_data.get("Vectors", {}).values() %}
+{% set type=data_type_to_proto_type(vector.TypeRef) %}
+message {{ vector.Name }} {
+  repeated {{ type }} vaf_value_internal = 1;
+}
+{% endfor %}
+{% for map_entry in namespace_data.get("Maps", {}).values() %}
+{% set key_type=data_type_to_proto_type(map_entry.MapKeyTypeRef) %}
+{% set value_type=data_type_to_proto_type(map_entry.MapValueTypeRef) %}
+message {{ map_entry.Name }}Entry {
+  {{ key_type }} vaf_key_internal = 1;
+  {{ value_type }} vaf_value_internal = 2;
+}
+message {{ map_entry.Name }} {
+  repeated {{ map_entry.Name }}Entry vaf_entry_internal = 1;
+}
+{% endfor %}
+{% for string in namespace_data.get("Strings", {}).values() %}
+message {{ string.Name }} {
+  string vaf_value_internal = 1;
+}
+{% endfor %}
+{% for enum in namespace_data.get("Enums", {}).values() %}
+message {{ enum.Name }} {
+{% if enum.BaseType is none%}
+  uint32 vaf_value_internal = 1;
+{% else %}
+{% set type=data_type_to_proto_type(enum.BaseType) %}
+  {{ type }} vaf_value_internal = 1;
+{% endif %}
+}
+{% endfor %}
+{% for struct in namespace_data.get("Structs", {}).values() %}
+message {{ struct.Name }} {
+{% for sub_element in struct.SubElements %}
+{% set type=data_type_to_proto_type(sub_element.TypeRef) %}
+  {{ type }} {{ sub_element.Name }} = {{ loop.index }};
+{% endfor %}
+}
+{% endfor %}
+{% for type_ref in namespace_data.get("TypeRefs", {}).values() %}
+{% set type=data_type_to_proto_type(type_ref.TypeRef) %}
+message {{ type_ref.Name }} {
+  {{ type }} vaf_value_internal = 1;
+}
+{% endfor %}

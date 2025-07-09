@@ -1,0 +1,64 @@
+{# Data elements macros #}
+
+{% macro provider_data_element_allocate(data_element, class_name = none) -%}
+{%- set data_type = data_type_to_str(data_element.TypeRef) %}
+::vaf::Result<::vaf::DataPtr<{{ data_type }}>> {% if class_name %}{{ class_name }}::{% endif %}Allocate_{{ data_element.Name }}()
+{%- endmacro %}
+
+{% macro provider_data_element_set_allocated(data_element, class_name = none) -%}
+{%- set data_type = data_type_to_str(data_element.TypeRef) %}
+::vaf::Result<void> {% if class_name %}{{ class_name }}::{% endif %}SetAllocated_{{ data_element.Name }}(::vaf::DataPtr<{{ data_type }}>&& data)
+{%- endmacro %}
+
+{%- macro provider_data_element_set(data_element, class_name = none) -%}
+{%- set data_type = data_type_to_str(data_element.TypeRef) %}
+::vaf::Result<void> {% if class_name %}{{ class_name }}::{% endif %}Set_{{ data_element.Name }}(const {{ data_type }}& data)
+{%- endmacro %}
+
+{%- macro consumer_data_element_get_allocated(data_element, class_name = none) -%}
+{%- set data_type = data_type_to_str(data_element.TypeRef) %}
+::vaf::Result<::vaf::ConstDataPtr<const {{ data_type }}>> {% if class_name %}{{ class_name }}::{% endif %}GetAllocated_{{ data_element.Name }}()
+{%- endmacro %}
+
+{%- macro consumer_data_element_get(data_element, class_name = none) -%}
+{%- set data_type = data_type_to_str(data_element.TypeRef) %}
+{{ data_type }} {% if class_name %}{{ class_name }}::{% endif %}Get_{{ data_element.Name }}()
+{%- endmacro %}
+
+{%- macro consumer_data_element_handler_callback(data_element) -%}
+{%- set data_type = data_type_to_str(data_element.TypeRef) %}
+std::function<void(const ::vaf::ConstDataPtr<const {{ data_type }}>)>
+{%- endmacro %}
+
+{%- macro consumer_data_element_handler(data_element, class_name = none) -%}
+{%- set data_type = data_type_to_str(data_element.TypeRef) %}
+void {% if class_name %}{{ class_name }}::{% endif %}RegisterDataElementHandler_{{ data_element.Name }}(std::string owner, {{ consumer_data_element_handler_callback(data_element) }}&& f)
+{%- endmacro %}
+
+{%- macro operation_expand_in_parameters(operation) -%}
+    {%- for p in operation.Parameters if not is_out_parameter(p) -%}
+    {{ p.Name }}{% if not loop.last %}, {% endif %}
+    {%- endfor -%}
+{%- endmacro -%}
+
+{%- macro operation_parameters(operation) -%}
+    {%- for p in operation.Parameters if not is_out_parameter(p) -%}
+        const {{ data_type_to_str(p.TypeRef) }}& {{ p.Name }}{% if not loop.last %}, {% endif %}
+    {%- endfor -%}
+{%- endmacro -%}
+
+{%- macro consumer_operation(operation, interface, class_name = none) -%}
+::vaf::Future<{{ operation_get_return_type(operation, interface) }}> {% if class_name %}{{ class_name }}::{% endif %}{{ operation.Name }}({{ operation_parameters(operation) }})
+{%- endmacro %}
+
+{%- macro provider_operation_callback(operation, interface) -%}
+std::function<{{ operation_get_return_type(operation, interface) }}(
+    {%- for p in operation.Parameters if not is_out_parameter(p) -%}
+        const {{ data_type_to_str(p.TypeRef) }}&{% if not loop.last %}, {% endif %}
+    {%- endfor -%}
+    )>
+{%- endmacro %}
+
+{%- macro provider_operation(operation, interface, class_name = none) -%}
+void {% if class_name %}{{ class_name }}::{% endif %}RegisterOperationHandler_{{ operation.Name }}({{ provider_operation_callback(operation, interface) }}&& f)
+{%- endmacro %}

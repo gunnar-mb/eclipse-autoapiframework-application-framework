@@ -1,0 +1,32 @@
+{% extends "common/h_file_base.jinja" %}
+{% import "vaf_interface/macros.jinja" as interface with context %}
+
+{% block includes %}
+#include <functional>
+
+#include "vaf/future.h"
+#include "vaf/result.h"
+#include "vaf/data_ptr.h"
+
+{% for i in include_files | sort %}
+{{ i }}
+{% endfor %}
+{% endblock %}
+
+{% block content %}
+class {{ name }}Provider {
+public:
+  virtual ~{{ name }}Provider() = default;
+
+{% for de in data_elements %}
+{%- set data_type = data_type_to_str(de.TypeRef) %}
+  virtual {{ interface.provider_data_element_allocate(de) }} = 0;
+  virtual {{ interface.provider_data_element_set_allocated(de) }} = 0;
+  virtual {{ interface.provider_data_element_set(de) }} = 0;
+{% endfor %}
+
+{% for op in operations %}
+  virtual {{ interface.provider_operation(op, module_interface) }} = 0;
+{% endfor %}
+};
+{% endblock %}

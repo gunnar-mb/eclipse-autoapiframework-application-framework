@@ -1,0 +1,75 @@
+{
+    // See https://code.visualstudio.com/docs/editor/tasks
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "TestPythonPackage",
+            "type": "shell",
+            "command": "${workspaceFolder}/.vscode/scripts/mk.sh -w test",
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "presentation": {
+                "reveal": "silent",
+                "clear": true,
+            }
+        },
+        {
+            "label": "TestSlowPythonPackage",
+            "type": "shell",
+            "command": "${workspaceFolder}/.vscode/scripts/mk.sh -w test PYTEST_FLAGS='--runslow'",
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "presentation": {
+                "reveal": "silent",
+                "clear": true,
+            }
+        },
+        {
+            "label": "LintPythonPackage",
+            "type": "shell",
+            "command": "${workspaceFolder}/.vscode/scripts/mk.sh -w check-format lint",
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "presentation": {
+                "reveal": "silent",
+                "clear": true,
+            }
+        },
+        {
+            "label": "LintTestPythonPackage",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "LintPythonPackage",
+                "TestSlowPythonPackage",
+            ],
+        },
+        {
+            "label": "UpdatePythonPackage",
+            "type": "shell",
+            "command": "${workspaceFolder}/.vscode/scripts/mk.sh -w clean build && ${workspaceFolder}/.vscode/scripts/reinstall_wheels.sh",
+            "group": "build",
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "presentation": {
+                "reveal": "silent",
+                "clear": true,
+            }
+        },
+        {
+            "label": "Build TC",
+            "type": "shell",
+            "command": "cd TechnicalConcept && make html",
+            "group": "build",
+            "options": { },
+            "presentation": {
+                "reveal": "silent",
+                "clear": true,
+            }
+        },
+    ]
+}

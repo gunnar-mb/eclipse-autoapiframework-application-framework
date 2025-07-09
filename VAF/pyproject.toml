@@ -1,0 +1,154 @@
+[project]
+name = "vaf"
+dynamic = ["version"]
+description = "Commandline tool for the Vehicle Application Framework (VAF)"
+readme = "README.md"
+keywords = ["python", "module"]
+classifiers = [
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+authors = [{ name = "author", email = "" }]
+license = { file = "LICENSE" }
+
+dependencies = [
+    "click>=8.1.7",
+    "conan>=2.9.0",
+    "copier>=9.3.1",
+    "jinja2>=3.1.4",
+    "pydantic>=2.9.2",
+    "lxml",
+    "networkx",
+    "click-prompt==0.6.1",
+]
+requires-python = ">=3.10"
+
+[project.urls]
+Homepage = "https://projects.eclipse.org/projects/automotive.autoapiframework"
+Repository = "https://gitlab.eclipse.org/eclipse/autoapiframework"
+Documentation = "<spo url>"
+Changelog = "<source url>"
+
+[project.scripts]
+vaf = "vaf.__main__:cli"
+
+[build-system]
+requires = ["pdm-backend==2.3.3", "pdm-build-locked==0.3.2"]
+build-backend = "pdm.backend"
+
+
+#########
+# TOOLS #
+#########
+
+[tool.pdm.version]
+source = "scm"
+fallback_version = "0.1.0"
+
+[tool.pdm]
+plugins = ["pdm-build-locked"]
+
+[tool.pdm.build]
+package-dir = "src"
+excludes = ["tests/_temp"]
+
+[tool.pdm.dev-dependencies]
+dev = [
+    # lint
+    "ruff>=0.5.4",
+    "mypy>=1.11.0",
+    "pip>=24.1.2",
+    "pylint>=3.2.6",
+    # test
+    "pytest>=8.3.1",
+    "pytest-cov>=5.0.0",
+    "pytest-dependency",
+    # "pes-pytest-utils>=0.1.0",
+    # doc and spec
+    "packaging>=24.1",
+]
+
+
+[tool.ruff]
+extend = "python3-makefile/ruff.toml"
+exclude = ["src/vaf/cli_core/templates", "tests/unit/vafpy/test_data", "tests/unit/cli_core/test_data"]
+
+[tool.pylint]
+## pylint linter settings
+## see `pylint --generate-toml-config`
+## justify single line via:  # pylint: disable=<rule>
+extension-pkg-allow-list = "lxml"
+disable = [
+    "C0103", #Buggy line disabling mechanism
+]
+
+[tool.pylint.main]
+ignore-paths = [
+    ".git",
+    "__pypackages__",
+    "tests/_temp",
+    "src/vaf/cli_core/main/templates",
+    "src/vaf/cli_core/bootstrap/templates",
+    # "tests"  # enable/disable linting within tests directory
+]
+load-plugins = ["pylint.extensions.docparams"]
+accept-no-param-doc = "no"
+accept-no-raise-doc = "no"
+accept-no-yields-doc = "no"
+default-docstring-type = "google"
+
+[tool.pylint.format]
+max-line-length = 120
+
+[tool.black]
+## black code formatter settings
+line-length = 120
+
+[tool.mypy]
+## mypy static typechecker settings
+## see https://mypy.readthedocs.io/en/stable/config_file.html
+## justify single line via:
+##     # type: ignore[<error-code>]
+##     # type: ignore
+files = [
+    "src/",
+    "tests/", # enable/disable linting within tests directory
+]
+mypy_path = "src"
+exclude = [
+    "tests/_temp",                # Exclude tests/_temp from mypy. Some tests will install venvs there.
+    "src/vaf/cli_core/main/templates",
+    "src/vaf/cli_core/bootstrap/templates",
+    "tests/unit/cli_core/test_data",
+    "tests/unit/vafpy/test_data",
+]
+show_error_codes = true
+strict = true # https://mypy.readthedocs.io/en/stable/config_file.html#confval-strict
+ignore_missing_imports = true
+
+#[[tool.mypy.overrides]]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+norecursedirs = ["_temp/*"]
+addopts = "--verbose --cov-report=term"
+# markers for testing vafpy
+markers = [
+    "vafpy_xy_data_el: test XyDataElement",
+    "vafpy_xy_operations: test XyOperations",
+    "slow: mark test as slow"
+]
+
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+relative_files = true
+
+[tool.coverage.report]
+show_missing = true

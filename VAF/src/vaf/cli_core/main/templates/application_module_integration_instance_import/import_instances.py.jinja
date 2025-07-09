@@ -1,0 +1,17 @@
+"""Import the instances of application modules.
+
+This file is generated. Do not edit manually!
+"""
+class Instances:
+{% for app_module_name, app_module_data in app_modules_data.items() %}
+    class {{ app_module_name }}:
+    {% for attribute_name, attribute_values in app_module_data.items() -%}
+        {% set attribute_name_camel=to_camel_case(attribute_name) -%}
+        {% if attribute_values and attribute_name_camel in generated_attributes %}
+            class {{ attribute_name_camel }}:
+                {% for value in attribute_values -%}
+                    {{ value }} = "{{ value }}"
+                {% endfor -%}
+        {% endif -%}
+    {% endfor -%}
+{% endfor -%}

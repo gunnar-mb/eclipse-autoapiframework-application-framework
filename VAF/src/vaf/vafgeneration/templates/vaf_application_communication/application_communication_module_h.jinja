@@ -1,0 +1,71 @@
+{% extends "common/h_file_base.jinja" %}
+{% import "vaf_interface/macros.jinja" as interface with context %}
+
+{% block includes %}
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "vaf/receiver_handler_container.h"
+#include "vaf/controller_interface.h"
+#include "vaf/data_ptr.h"
+#include "vaf/executable_controller_interface.h"
+#include "vaf/result.h"
+
+{{ consumer_interface_file.get_include() }}
+{{ provider_interface_file.get_include() }}
+{% endblock %}
+
+{% block content %}
+
+class {{ module.Name }}
+    : public {{ consumer_interface_file.get_full_type_name() }}, public {{ provider_interface_file.get_full_type_name() }}, public vaf::ControlInterface {
+ public:
+  {{ module.Name }}(vaf::Executor& executor, std::string name, std::vector<std::string> dependencies, vaf::ExecutableControllerInterface& executable_controller_interface);
+  ~{{ module.Name }}() override = default;
+
+  {{ module.Name }}(const {{ module.Name }}&) = delete;
+  {{ module.Name }}({{ module.Name }}&&) = delete;
+  {{ module.Name }}& operator=(const {{ module.Name }}&) = delete;
+  {{ module.Name }}& operator=({{ module.Name }}&&) = delete;
+
+  vaf::Result<void> Init() noexcept override;
+  void Start() noexcept override;
+  void Stop() noexcept override;
+  void DeInit() noexcept override;
+  void StartEventHandlerForModule(const std::string& module) override;
+  void StopEventHandlerForModule(const std::string& module) override;
+
+  {% for de in module.ModuleInterfaceRef.DataElements %}
+  {% set data_type = data_type_to_str(de.TypeRef) %}
+  {{ interface.consumer_data_element_get_allocated(de) }} override;
+  {{ interface.consumer_data_element_get(de) }} override;
+  {{ interface.consumer_data_element_handler(de) }} override;
+
+  {{ interface.provider_data_element_allocate(de) }} override;
+  {{ interface.provider_data_element_set_allocated(de) }} override;
+  {{ interface.provider_data_element_set(de) }} override;
+  {% endfor %}
+
+  {% for op in module.ModuleInterfaceRef.Operations %}
+  {{ interface.consumer_operation(op, module.ModuleInterfaceRef) }} override;
+  {{ interface.provider_operation(op, module.ModuleInterfaceRef) }} override;
+  {% endfor %}
+
+ private:
+  vaf::ModuleExecutor& executor_;
+  std::vector<std::string> active_modules_;
+
+  {% for de in module.ModuleInterfaceRef.DataElements %}
+  {% set data_type = data_type_to_str(de.TypeRef) %}
+  vaf::ConstDataPtr<const {{ data_type }}> {{ de.Name }}_sample_{std::make_unique<{{ data_type }}>()};
+  std::vector<vaf::ReceiverHandlerContainer<{{ interface.consumer_data_element_handler_callback(de) }}>> {{ de.Name }}_handlers_;
+  {% endfor %}
+
+  {% for op in module.ModuleInterfaceRef.Operations %}
+  {{ interface.provider_operation_callback(op, module.ModuleInterfaceRef) }} {{ op.Name }}_handler_;
+  {% endfor %}
+
+};
+
+{% endblock %}

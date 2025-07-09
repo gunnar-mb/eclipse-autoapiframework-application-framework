@@ -1,0 +1,13 @@
+"""Initialize the application_modules module.
+
+This file is generated. Do not edit manually!
+"""
+
+__all__ = [
+    {{ classes | map("to_json") | join(',\n') | indent(4) }}
+]
+
+{% for package in packages -%}
+from . import {{ package }}
+{% endfor %}
+{{ imports | join('\n') }}

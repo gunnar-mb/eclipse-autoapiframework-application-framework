@@ -1,0 +1,72 @@
+{% include "common/copyright.jinja" %}
+
+#include <cstddef>
+#include <cstdint>
+#include <csignal>
+#include <iostream>
+#include "gtest/gtest.h"
+#include "gmock/gmock.h"
+{% set includes = interfaces | map(attribute="include_mock") | unique %}
+{% for i in includes %}
+{{ i }}
+{% endfor %}
+{{ app_include }}
+
+{% block content %}
+// Put inside test to skip
+//GTEST_SKIP() << "Skipping single test";
+using ::testing::Return;
+using ::testing::_;
+
+namespace vaf {
+    /*!
+     * \brief Initializes the signal handling.
+     * \return void.
+     */
+    void InitializeSignalHandling() noexcept {
+      bool success{true};
+      sigset_t signals;
+
+      /* Block all signals except the SIGABRT, SIGBUS, SIGFPE, SIGILL, SIGSEGV signals because blocking them will lead to
+       * undefined behavior. Their default handling shall not be changed (dependent on underlying POSIX environment, usually
+       * process is killed and a dump file is written). Signal mask will be inherited by subsequent threads. */
+
+      success = success && (0 == sigfillset(&signals));
+      success = success && (0 == sigdelset(&signals, SIGABRT));
+      success = success && (0 == sigdelset(&signals, SIGBUS));
+      success = success && (0 == sigdelset(&signals, SIGFPE));
+      success = success && (0 == sigdelset(&signals, SIGILL));
+      success = success && (0 == sigdelset(&signals, SIGSEGV));
+      success = success && (0 == pthread_sigmask(SIG_SETMASK, &signals, nullptr));
+
+      if (!success) {
+        // Exit
+      }
+    }
+
+    class {{ app_module.Name }}UnitTest : public ::testing::Test {
+    protected:
+      {{ app_module.Name }}UnitTest() {}
+
+      virtual ~{{ app_module.Name }}UnitTest() {}
+
+      virtual void SetUp() {
+        InitializeSignalHandling();
+      }
+
+      virtual void TearDown() {
+      }
+    };
+
+    TEST_F({{ app_module.Name }}UnitTest, Test_1) {
+      {% for i in interfaces %}
+      auto {{ i["instance"] }}Mock = std::make_shared<{{ i["type"] }}Mock>();
+      {% endfor %}
+
+      auto {{ app_module.Name }} = std::make_shared<{{ app_module.Namespace }}::{{ app_module.Name }}>({{ app_module.Namespace }}::{{ app_module.Name }} ::ConstructorToken{
+        {% for i in interfaces %}
+        {{ i["instance"] }}Mock{% if not loop.last %},
+{% endif %}{% endfor %}});
+    }
+} // namespace vaf
+{% endblock %}

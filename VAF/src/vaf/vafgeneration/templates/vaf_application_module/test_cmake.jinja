@@ -1,0 +1,73 @@
+cmake_minimum_required(VERSION 3.21)
+project({{ target_name }})
+
+find_package(Threads)
+find_package(GTest REQUIRED)
+if (NOT GTest_FOUND)
+    message(FATAL_ERROR "Cannot find Google Test Framework!")
+endif()
+
+include(GoogleTest)
+
+add_executable(${PROJECT_NAME})
+
+target_compile_options(${PROJECT_NAME}
+  PRIVATE
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wall>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wextra>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wshadow>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wnon-virtual-dtor>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wold-style-cast>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wcast-align>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wunused>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Woverloaded-virtual>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-pedantic>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wconversion>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wsign-conversion>)
+
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
+
+target_compile_definitions(${PROJECT_NAME} PUBLIC)
+
+target_include_directories(${PROJECT_NAME}
+  PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+
+target_sources(
+  ${PROJECT_NAME}
+  PRIVATE
+    {% for f in app_files %}
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../{{f.get_file_path("", ".h")}}
+    {% endfor %}
+    {% for f in app_files %}
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../{{f.get_simple_file_path("", ".cpp")}}
+    {% endfor %}
+    {% for f in base_files %}
+    ${CMAKE_CURRENT_SOURCE_DIR}/{{f.get_file_path("", ".h")}}
+    {% endfor %}
+    {% for f in base_files %}
+    ${CMAKE_CURRENT_SOURCE_DIR}/{{f.get_file_path("", ".cpp")}}
+    {% endfor %}
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/tests.cpp
+)
+
+# cmake-format: off
+target_link_libraries(
+  ${PROJECT_NAME}
+  PRIVATE
+    Threads::Threads
+    $<IF:$<TARGET_EXISTS:vafcpp::vaf_core>,vafcpp::vaf_core,vaf_core>
+    gmock
+    gtest::gtest
+    $<TARGET_NAME_IF_EXISTS:vaf_data_types>
+    $<TARGET_NAME_IF_EXISTS:vaf_module_interfaces>
+    $<TARGET_NAME_IF_EXISTS:vaf_module_interface_mocks>
+)
+# cmake-format: on
+
+gtest_discover_tests(${PROJECT_NAME})
+{# dummy comment for new line #}

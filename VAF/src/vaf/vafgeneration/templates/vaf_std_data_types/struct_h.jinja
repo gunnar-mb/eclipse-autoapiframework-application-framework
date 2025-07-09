@@ -1,0 +1,15 @@
+{% extends "common/h_file_base.jinja" %}
+
+{% block includes %}
+{% for i in includes | unique  %}
+{{ i }}
+{% endfor %}
+{% endblock %}
+
+{% block content %}
+struct {{ vaf_struct.Name }} {
+{% for s in vaf_struct.SubElements %}
+  {{ get_file_helper(s.TypeRef).get_full_type_name() }} {{ s.Name }};
+{% endfor %}
+};
+{% endblock %}

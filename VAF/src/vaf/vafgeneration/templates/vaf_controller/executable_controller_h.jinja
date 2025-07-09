@@ -1,0 +1,24 @@
+{% extends "common/h_file_base.jinja" %}
+
+{% block includes %}
+#include <memory>
+
+#include "vaf/executable_controller_base.h"
+#include "vaf/executor.h"
+{% endblock %}
+
+{% block content %}
+class ExecutableController final : public vaf::ExecutableControllerBase {
+ public:
+  ExecutableController();
+  ~ExecutableController() override = default;
+
+ protected:
+  void DoInitialize() override;
+  void DoStart() override;
+  void DoShutdown() override;
+
+ private:
+  std::unique_ptr<vaf::Executor> executor_;
+};
+{% endblock %}

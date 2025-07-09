@@ -1,0 +1,5 @@
+{% include "common/cmake_copyright.jinja" %}
+
+{% for subdir in subdirs %}
+add_subdirectory({{ subdir }})
+{% endfor %}

@@ -1,0 +1,12 @@
+"""Initialize the interface module.
+
+This file is generated. Do not edit manually!
+"""
+
+__all__ = [
+    {{ modules | map("to_json") | join(',\n') | indent(4) }}
+]
+
+{% for module in modules -%}
+from . import {{ module }}
+{% endfor %}

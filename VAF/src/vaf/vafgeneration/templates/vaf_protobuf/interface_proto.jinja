@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+{% for import in imports %}
+import "protobuf_{{ import.replace("::","_") }}.proto";
+{% endfor %}
+
+package protobuf.{{ package }};
+
+{% for de in interface.DataElements %}
+{% set data_type = data_type_to_proto_type(de.TypeRef) %}
+message {{ de.Name }} {
+  {{ data_type }} vaf_value_internal = 1;
+}
+{% endfor %}
+{% for op in interface.Operations %}
+message {{ op.Name }}_out {
+{% for p in op.Parameters if not is_in_parameter(p) %}
+{% set data_type = data_type_to_proto_type(p.TypeRef) %}
+  {{ data_type }} {{ p.Name }} = {{loop.index}};
+{% endfor %}
+}
+message {{ op.Name }}_in {
+{% for p in op.Parameters if not is_out_parameter(p) %}
+{% set data_type = data_type_to_proto_type(p.TypeRef) %}
+  {{ data_type }} {{ p.Name }} = {{loop.index}};
+{% endfor %}
+}
+{% endfor %}

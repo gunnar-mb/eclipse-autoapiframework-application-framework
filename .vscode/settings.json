@@ -1,0 +1,17 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/VAF/.venv/bin/python",
+
+  // testing
+  "python.testing.pytestEnabled": true,
+  "python.testing.pytestArgs": [
+    "--no-cov", // when using 'pytest-cov' we need to disable coverage when debugging
+    "VAF/tests",
+    "-vv",
+    "--runslow"
+  ],
+  "python.testing.unittestEnabled": false,
+
+  // misc
+  "window.zoomLevel": 0,
+  "terminal.integrated.allowChords": false
+}

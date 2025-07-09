@@ -1,0 +1,6 @@
+{% extends "common/cmake_library.jinja" %}
+
+{% block packages %}
+find_package(SilKit REQUIRED MODULE)
+find_package(Threads REQUIRED)
+{% endblock %}

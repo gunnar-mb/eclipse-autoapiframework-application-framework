@@ -1,0 +1,89 @@
+{% extends "common/cpp_file_base.jinja" %}
+{% import "vaf_interface/macros.jinja" as interface with context %}
+
+{% block content %}
+
+/*
+  Generated based on configuration in ../../model/{{ to_snake_case(app_module.Name).lower() }}.py
+
+  {% if (app_module.ConsumedInterfaces | length) > 0 %}
+  Consumer interfaces
+  ===================
+    {% set i = app_module.ConsumedInterfaces[0] %}
+    {% if (i.ModuleInterfaceRef.DataElements | length) > 0 %}
+      {% set data_element = i.ModuleInterfaceRef.DataElements[0] %}
+    Data element API example for {{ data_element.Name }} of type {{ data_type_to_str(data_element.TypeRef) }}
+      - {{ interface.consumer_data_element_get_allocated(data_element) }}
+      - {{ interface.consumer_data_element_get(data_element) }}
+      - {{ interface.consumer_data_element_handler(data_element) }}
+
+    {% endif %}
+  {% endif %}
+  {% for i in app_module.ConsumedInterfaces %}
+    - {{ i.InstanceName }}_ : {{ get_interface_type_by_instance(interfaces, i.InstanceName) }}
+      {% if (i.ModuleInterfaceRef.DataElements | length) > 0 %}
+      - Data elements
+      {% for data_element in i.ModuleInterfaceRef.DataElements %}
+        - {{ data_element.Name }} : {{ data_type_to_str(data_element.TypeRef) }}
+      {% endfor %}
+      {% endif %}
+      {% if (i.ModuleInterfaceRef.Operations | length) > 0 %}
+      - Operations
+      {% for operation in i.ModuleInterfaceRef.Operations %}
+        - {{ interface.consumer_operation(operation, i.ModuleInterfaceRef) }}
+      {% endfor %}
+      {% endif %}
+  {% endfor %}
+  {% if (app_module.ProvidedInterfaces | length) > 0 %}
+    {% if (app_module.ConsumedInterfaces | length) > 0 %}
+
+    {% endif %}
+  Provider interfaces
+  ===================
+    {% set i = app_module.ProvidedInterfaces[0] %}
+    {% if (i.ModuleInterfaceRef.DataElements | length) > 0 %}
+      {% set data_element = i.ModuleInterfaceRef.DataElements[0] %}
+    Data element API example for {{ data_element.Name }} of type {{ data_type_to_str(data_element.TypeRef) }}
+     - {{ interface.provider_data_element_allocate(data_element) }}
+     - {{ interface.provider_data_element_set_allocated(data_element) }}
+     - {{ interface.provider_data_element_set(data_element) }}
+
+    {% endif %}
+  {% endif %}
+  {% for i in app_module.ProvidedInterfaces %}
+    - {{ i.InstanceName }}_ : {{ get_interface_type_by_instance(interfaces, i.InstanceName) }}
+      {% if (i.ModuleInterfaceRef.DataElements | length) > 0 %}
+      - Data elements
+      {% for data_element in i.ModuleInterfaceRef.DataElements %}
+        - {{ data_element.Name }} : {{ data_type_to_str(data_element.TypeRef) }}
+      {% endfor %}
+      {% endif %}
+      {% if (i.ModuleInterfaceRef.Operations | length) > 0 %}
+      - Operations
+      {% for operation in i.ModuleInterfaceRef.Operations %}
+        - {{ interface.provider_operation(operation, i.ModuleInterfaceRef) }}
+      {% endfor %}
+      {% endif %}
+  {% endfor %}
+*/
+
+/**********************************************************************************************************************
+  Constructor
+**********************************************************************************************************************/
+{{ app_module.Name }}::{{ app_module.Name }}(ConstructorToken&& token)
+    : {{ app_module.Name }}Base(std::move(token))
+{
+  // Insert your code here...
+}
+
+/**********************************************************************************************************************
+  {{ app_module.Tasks|count }} periodic task(s)
+**********************************************************************************************************************/
+{% for r in app_module.Tasks %}
+// Task with name {{ r.Name }} and a period of {{ r.Period }}.
+void {{ app_module.Name }}::{{ r.Name }}() {
+  // Insert your code for periodic execution here...
+}
+
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% include "common/copyright.jinja" %}
+
+
+{{ file_helper.get_include_guard_start() }}
+{% block includes %}
+{% endblock %}
+
+{{ file_helper.get_namespace_start() }}
+{% block content %}
+{% endblock %}
+
+{{ file_helper.get_namespace_end() }}
+{{ file_helper.get_include_guard_end() }}

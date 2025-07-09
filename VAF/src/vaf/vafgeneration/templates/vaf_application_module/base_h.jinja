@@ -1,0 +1,53 @@
+{% extends "common/h_file_base.jinja" %}
+
+{% block includes %}
+#include <memory>
+
+#include "vaf/executor.h"
+#include "vaf/executable_controller_interface.h"
+#include "vaf/controller_interface.h"
+
+{% set includes = interfaces | map(attribute="include") | unique %}
+{% for i in includes %}
+{{ i }}
+{% endfor %}
+{% endblock %}
+
+{% block content %}
+class {{ app_module.Name }}Base : public vaf::ControlInterface {
+ public:
+  struct ConstructorToken {
+    std::string name_;
+    std::vector<std::string> dependencies_;
+    vaf::ExecutableControllerInterface& executable_controller_interface_;
+    vaf::Executor& executor_;
+    {% for i in interfaces %}
+    std::shared_ptr<{{ i["type"] }}> {{ i["instance"] }}_;
+    {% endfor %}
+    {% for r in app_module.Tasks %}
+    uint64_t task_offset_{{ r.Name }}_;
+    std::chrono::nanoseconds task_budget_{{ r.Name }}_;
+    {% endfor %}
+  };
+
+  {{ app_module.Name }}Base(ConstructorToken&& token);
+  virtual ~{{ app_module.Name }}Base() = default;
+
+  virtual vaf::Result<void> Init() noexcept { return vaf::Result<void>{}; }
+  virtual void Start() noexcept { ReportOperational(); }
+  virtual void Stop() noexcept {}
+  virtual void DeInit() noexcept {}
+
+  virtual void OnError(const vaf::Error& error) override { static_cast<void>(error); }
+
+  {%for r in app_module.Tasks %}
+  virtual void {{ r.Name }}() = 0;
+  {% endfor %}
+
+ protected:
+  vaf::ModuleExecutor& executor_;
+  {% for i in interfaces %}
+  std::shared_ptr<{{ i["type"] }}> {{ i["instance"] }}_;
+  {% endfor %}
+};
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "common/h_file_base.jinja" %}
+{% import "vaf_interface/macros_mocks.jinja" as interface with context %}
+
+{% block includes %}
+#include <functional>
+
+#include "vaf/future.h"
+#include "vaf/result.h"
+#include "vaf/data_ptr.h"
+#include "gmock/gmock.h"
+
+{% for i in include_files | sort %}
+{{ i }}
+{% endfor %}
+{% endblock %}
+
+{% block content %}
+class {{ name }}ProviderMock : public {{ name }}Provider{
+public:
+{% for de in data_elements %}
+{%- set data_type = data_type_to_str(de.TypeRef) %}
+  MOCK_METHOD({{ interface.mock_provider_data_element_allocate(de) }}, (override));
+  MOCK_METHOD({{ interface.mock_provider_data_element_set_allocated(de) }}, (override));
+  MOCK_METHOD({{ interface.mock_provider_data_element_set(de) }}, (override));
+{% endfor %}
+
+{% for op in operations %}
+  MOCK_METHOD({{ interface.mock_provider_operation(op, module_interface) }}, (override));
+{% endfor %}
+};
+{% endblock %}

@@ -1,0 +1,18 @@
+#[=======================================================================[
+  COPYRIGHT
+  -------------------------------------------------------------------------------------------------------------------
+
+  Copyright (c) 2025 by Vector Informatik GmbH. All rights reserved.
+
+                This software is copyright protected and proprietary to Vector Informatik GmbH.
+                Vector Informatik GmbH grants to you only those rights as set out in the license conditions.
+                All other rights remain with Vector Informatik GmbH.
+
+  -------------------------------------------------------------------------------------------------------------------
+  FILE DESCRIPTION
+  -------------------------------------------------------------------------------------------------------------------
+        \file    CMakeLists.txt
+#]=======================================================================]
+add_subdirectory(already_existing_executable1)
+add_subdirectory(already_existing_executable2)
+add_subdirectory(my_executable)

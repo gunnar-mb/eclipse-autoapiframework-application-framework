@@ -1,0 +1,22 @@
+{% include "common/cmake_copyright.jinja" %}
+
+set(TARGET {{target_name}})
+
+add_library(${TARGET} INTERFACE)
+
+target_include_directories(${TARGET}
+    INTERFACE
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        {% for i in include_directories %}
+        {{ i }}
+        {% endfor %}
+        $<INSTALL_INTERFACE:include>)
+
+{% if (libraries | length) > 0 %}
+target_link_libraries(${TARGET}
+    INTERFACE
+        {% for lib in libraries %}
+        {{ lib }}
+        {% endfor %}
+    )
+{% endif %}

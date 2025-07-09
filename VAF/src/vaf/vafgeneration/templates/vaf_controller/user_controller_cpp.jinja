@@ -1,0 +1,43 @@
+{% extends "common/cpp_file_base.jinja" %}
+
+{% block includes %}
+#include <iostream>
+{% endblock %}
+
+{% block content %}
+std::unique_ptr<vaf::UserControllerInterface> CreateUserController() {
+  return std::make_unique<UserController>();
+}
+
+void UserController::PreInitialize() {
+ std::cout << "UserController::PreInitialize\n";
+}
+
+void UserController::PostInitialize() {
+  std::cout << "UserController::PostInitialize\n";
+}
+
+void UserController::PreStart() {
+  std::cout << "UserController::PreStart\n";
+}
+
+void UserController::PostStart() {
+  std::cout << "UserController::PostStart\n";
+}
+
+void UserController::PreShutdown() {
+  std::cout << "UserController::PreShutdown\n";
+}
+
+void UserController::PostShutdown() {
+  std::cout << "UserController::PostShutdown\n";
+}
+
+void UserController::OnError(vaf::Error error, std::string name, bool critical) {
+  std::cout << "UserController::OnError: name: " << name << ", Message: " << error.Message() << ", critical: " << critical << "\n";
+  if(critical){
+    std::cout << "UserController::OnError: Critical call, aborting execution!" << std::endl;
+    std::abort();
+  }
+}
+{%- endblock %}

@@ -1,0 +1,66 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.245.0/containers/cpp
+{
+    "name": "VAF",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".."
+    },
+    "runArgs": [
+        "--sysctl=net.ipv6.conf.all.disable_ipv6=0"
+    ],
+    "customizations": {
+        "vscode": {
+            // Set *default* container specific settings.json values on container create.
+            "settings": {
+                "[cpp]": {
+                    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+                },
+                "[python]": {
+                    "editor.defaultFormatter": "charliermarsh.ruff"
+                },
+                "editor.formatOnSave": true,
+                "json.format.keepLines": true,
+                "cmake.configureOnEdit": true,
+                "cmake.configureOnOpen": false,
+                "C_Cpp.intelliSenseEngine": "disabled",
+                "ruff.exclude": [
+                    ".pdm-build"
+                ],
+                "ruff.nativeServer": true
+            },
+            // Add the IDs of extensions you want installed when the container is created.
+            "extensions": [
+                "charliermarsh.ruff",
+                "llvm-vs-code-extensions.vscode-clangd",
+                "eamodio.gitlens",
+                "ms-python.python",
+                "ms-vscode.cmake-tools",
+                "ms-vscode.cpptools",
+                "SanaAjani.taskrunnercode",
+                "tamasfe.even-better-toml",
+                "twxs.cmake",
+                "yzhang.markdown-all-in-one"
+            ]
+        }
+    },
+    "containerEnv": {
+        "NODE_EXTRA_CA_CERTS": "/etc/ssl/certs/ca-certificates.crt",
+        "REQUESTS_CA_BUNDLE": "/etc/ssl/certs/ca-certificates.crt"
+    },
+    // Adjust the user in the Dockerfile if you're changing it here. Otherwise the prebuilt conan packages are unavailable.
+    // "remoteUser": "eclipse",
+    "mounts": [
+        // Uncomment the line below to mount your SSH keys into the container.
+        "source=${localEnv:HOME}/.ssh,target=/home/eclipse/.ssh,type=bind,consistency=cached",
+        // Uncomment the line below to mount your local SSL certificates into the container.
+        "source=/etc/ssl/certs/ca-certificates.crt,target=/etc/ssl/certs/ca-certificates.crt,type=bind,consistency=cached",
+        "source=vaf_bashhistory,target=/commandhistory,type=volume"
+    ],
+    "postCreateCommand": "sudo chown -R eclipse /commandhistory && echo \"export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history\" >> \"/home/eclipse/.bashrc\"",
+    "postStartCommand": "pre-commit install",
+    "capAdd": [
+        "NET_ADMIN",
+        "NET_RAW"
+    ]
+}

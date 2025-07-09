@@ -1,0 +1,32 @@
+import os
+
+from vaf.vafpy import Executable
+from vaf.vafpy.runtime import (
+    get_datatype,
+    get_module_interface,
+    get_platform_consumer_module,
+    get_platform_provider_module,
+    import_model,
+)
+
+script_path = os.path.dirname(os.path.realpath(__file__))
+
+import_model(os.path.join(script_path, "{{ model_name }}"))
+
+{% for namespace, class_data in cac_model.items() %}
+    {%- set class_name = namespace.rsplit("::", 1)[-1] if "::" in namespace else namespace %}
+    {%- set level = class_data["level"] %}
+{{" " * 4 * level}}class {{to_camel_case(class_name)}}:
+    {% for element_type in class_data["set_elements"] %}
+{{" " * 4 * (level + 1)}}# {{to_snake_case(element_type).replace("_", " ").title()}}
+        {% for element_name in class_data["data"][element_type] %}
+            {% if element_type in data_types %}
+{{" " * 4 * (level + 1)}}{{ to_snake_case(element_name) }} = get_datatype("{{element_name}}", "{{namespace}}", "{{element_type.removesuffix("s")}}")
+            {% else %}
+{{" " * 4 * (level + 1)}}{{to_snake_case(element_name)}} = get_{{to_snake_case(element_type.removesuffix("s"))}}(
+{{" " * 4 * (level + 2)}}"{{element_name}}", "{{namespace}}"
+{{" " * 4 * (level + 1)}})
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+{% endfor %}

@@ -1,0 +1,11 @@
+.tmp/
+*.bkp
+.cache
+build
+.rake_tasks~
+.pdm-python
+_vafinstall
+vafinstall.tar.gz
+public
+VAF/.python-version
+**/__pycache__/

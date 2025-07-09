@@ -1,0 +1,66 @@
+{
+  "$schema": "../../../MetaModel/VafEntrySchema.json",
+  "DataTypeDefinitions": {
+
+  },
+  "ModuleInterfaces": [
+      {
+          "Name": "ServiceY",
+          "Namespace": "nsmiddleware::nsmoduleinterface::nsservicey",
+          "DataElements": [
+              {
+                  "Name": "EventY",
+                  "TypeRef": "uint32_t"
+              }
+          ],
+          "Operations": [
+
+          ]
+      },
+      {
+          "Name": "ServiceX",
+          "Namespace": "nsmiddleware::nsmoduleinterface::nsservicex",
+          "DataElements": [
+              {
+                  "Name": "EventX",
+                  "TypeRef": "uint32_t"
+              }
+          ],
+          "Operations": [
+
+          ]
+      }
+  ],
+  "PlatformConsumerModules": [
+      {
+          "Name": "ServiceXConsumer",
+          "Namespace": "nsserviceconsumer::nsservicexconsumer",
+          "ModuleInterfaceRef": "nsmiddleware::nsmoduleinterface::nsservicex::ServiceX",
+          "OriginalEcoSystem": "SILKIT",
+          "ConnectionPointRef": "CPointServiceXConsumer"
+      }
+  ],
+  "PlatformProviderModules": [
+      {
+          "Name": "ServiceYProvider",
+          "Namespace": "nsserviceprovider::nsserviceyprovider",
+          "ModuleInterfaceRef": "nsmiddleware::nsmoduleinterface::nsservicey::ServiceY",
+          "OriginalEcoSystem": "SILKIT",
+          "ConnectionPointRef": "CPointServiceYProvider"
+      }
+  ],
+  "SILKITAdditionalConfiguration": {
+    "ConnectionPoints": [
+      {
+        "Name": "CPointServiceXConsumer",
+        "ServiceInterfaceName": "ServiceX",
+        "RegistryUri": "silkit://localhost:8500"
+      },
+      {
+        "Name": "CPointServiceYProvider",
+        "ServiceInterfaceName": "ServiceY",
+        "RegistryUri": "silkit://localhost:8500"
+      }
+    ]
+  }
+}
