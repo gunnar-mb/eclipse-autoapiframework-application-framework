@@ -38,11 +38,19 @@
             ]
         }
     },
+    "containerEnv": {
+        "NODE_EXTRA_CA_CERTS": "/etc/ssl/certs/ca-certificates.crt",
+        "REQUESTS_CA_BUNDLE": "/etc/ssl/certs/ca-certificates.crt"
+    },    
     "mounts": [
         {% for mount in mount_paths -%}
         "{{ mount }}",
         {% endfor -%}
         "source=/etc/ssl/certs/ca-certificates.crt,target=/etc/ssl/certs/ca-certificates.crt,type=bind,consistency=cached",
         "source=vaf_bashhistory,target=/commandhistory,type=volume"
+    ],
+    "capAdd": [
+        "NET_ADMIN",
+        "NET_RAW"
     ]
 }
