@@ -47,7 +47,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
 
 # Build & install SilKit
 RUN mkdir -p /tmp/silkit \
-    && git clone -j4 https://github.com/vectorgrp/sil-kit.git /tmp/silkit \
+    && git clone --recurse-submodules -j4 https://github.com/vectorgrp/sil-kit.git /tmp/silkit \
     && git -C /tmp/silkit checkout tags/v4.0.55 \
     && git -C /tmp/silkit submodule update --init --recursive \
     && mkdir /tmp/silkit/build \
