@@ -1,7 +1,6 @@
-# Welcome to the Git repository of the [Eclipse Automotive API Framework](https://projects.eclipse.org/projects/automotive.autoapiframework)
+# Welcome to the Vehicle Application Framework (VAF)
 
-This space is where the implementation of our Vehicle Application Framework (VAF) is versioned and
-maintained.
+This project is part of the [Eclipse Automotive API Framework](https://projects.eclipse.org/projects/automotive.autoapiframework).
 
 ## Repository contents
 
