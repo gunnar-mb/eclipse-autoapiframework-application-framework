@@ -1,0 +1,16 @@
+name: Unit Tests
+on: [push, pull_request]
+
+jobs:
+  container_test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          apt install -y docker
+
+      - name: Build container
+        run: |
+          cd Container && . build.sh
