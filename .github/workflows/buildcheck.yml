@@ -1,0 +1,16 @@
+name: Container build check
+on: [push, pull_request]
+
+jobs:
+  container_build_check:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build container
+        run: |
+          cd Container && . build.sh
